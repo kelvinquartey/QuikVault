@@ -1,19 +1,204 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8FAFC; 
+  --foreground: #0F172A; 
+
+  --radius: 12px;
+}
+
+@layer base {
+  * {
+    @apply scroll-smooth;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 50px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #fa7275;
+  }
+
+  /* Remove scrollbar */
+  .remove-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .remove-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  /* Charts fix */
+  .recharts-responsive-container {
+    height: initial !important;
+  }
+}
+
+@theme {
+  /* Fonts */
+  --font-poppins: var(--font-poppins);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+  --font-mono: var(--font-geist-mono);
+  --font-grotesk: var(--font-grotesk);
+
+  /*Primary Brand */
+  --color-primary: #2563EB;    
+  --color-primary-hover: #1D4ED8;
+  --color-primary-light: #F5F9FF;
+
+  /*Text / Dark */
+  --color-dark-100: #0F172A;
+  --color-dark-200: #1E293B;
+
+  /*Neutrals */
+  --color-gray-100: #F8FAFC;
+  --color-gray-200: #E2E8F0;
+  --color-gray-300: #CBD5E1;
+  --color-gray-400: #94A3B8;
+  --color-gray-500: #475569;
+
+  /*Accent & Status */
+  --color-accent: #06B6D4;
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-dropdown: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.3);
+
+  /* Radius */
+  --radius-xl: 16px;
+  --radius-lg: 12px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  /* Motion */
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-in: slide-in 0.2s ease-out;
+  --animate-scale-in: scale-in 0.15s ease-out;
+
+  /* Layout */
+  --spacing-container: 1280px;
+
+  /* Keyframes */
+  @keyframes fade-in {
+    0% { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-in {
+    0% { opacity: 0; transform: translateX(10px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes scale-in {
+    0% { transform: scale(0.96); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+}
+
+@layer utilities {
+
+  /* Layout */
+  .container {
+    @apply mx-auto max-w-7xl px-5;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .center {
+    @apply flex h-screen items-center justify-center;
+  }
+
+  /* Typography */
+  .h1 { @apply text-[2.125rem] leading-[2.625rem] font-bold; }
+  .h2 { @apply text-[1.5rem] leading-9 font-bold; }
+  .h3 { @apply text-[1.25rem] leading-7 font-semibold; }
+  .h4 { @apply text-[1.125rem] leading-5 font-medium; }
+  .h5 { @apply text-[1rem] leading-6 font-semibold; }
+
+  .subtitle-1 { @apply text-[1rem] leading-6 font-medium; }
+  .subtitle-2 { @apply text-[0.875rem] leading-5 font-semibold; }
+
+  .body-1 { @apply text-[1rem] leading-6 font-normal; }
+  .body-2 { @apply text-[0.875rem] leading-5 font-normal; }
+
+  .caption { @apply text-[0.75rem] leading-4 font-normal; }
+  .overline { @apply text-[0.625rem] leading-[0.875rem] font-normal; }
+
+  /*Button (SAFE version using CSS variables)*/
+  .primary-btn {
+    @apply transition-all rounded-full text-[0.875rem] leading-5 font-medium;
+    background-color: var(--color-primary);
+  }
+
+  .primary-btn:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  /*Shadcn helpers*/
+  .shad-no-focus {
+    @apply outline-none ring-offset-transparent focus:ring-transparent focus:ring-offset-0 focus-visible:outline-none focus-visible:ring-0;
+  }
+
+  .shad-input {
+    @apply border-none shadow-none p-0 text-[0.875rem] leading-5 font-normal;
+  }
+
+  /* Nav icons */
+  .nav-icon {
+    @apply w-6 invert opacity-25;
+  }
+
+  .nav-icon-active {
+    @apply invert-0 opacity-100;
+  }
+
+  /* Generic UI */
+  .thumbnail {
+    @apply flex items-center justify-center size-[50px] min-w-[50px] overflow-hidden rounded-full;
+  }
+
+  .thumbnail-image {
+    @apply size-full object-cover object-center;
+  }
+
+  .logo {
+    font-family: var(--font-grotesk);
+    @apply font-extrabold;
+    font-size: clamp(32px, 4vw, 48px);
+  }
+
+  .logo-light {
+    color: white;
+  }
+
+  .logo-light span:last-child {
+    opacity: 0.8;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0F172A;
+    --foreground: #F8FAFC;
   }
 }
 
 body {
-  color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--foreground);
 }
