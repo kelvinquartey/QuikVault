@@ -179,7 +179,7 @@
   .logo {
     font-family: var(--font-grotesk);
     @apply font-extrabold;
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(38px, 4vw, 48px);
   }
 
   .logo-light {
