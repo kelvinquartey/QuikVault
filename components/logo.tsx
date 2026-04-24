@@ -25,7 +25,7 @@ export const Logo = ({ variant = "light" }: LogoProps) => {
   return (
     <div className="flex items-center max-lg:-ml-22 max-lg:-mt-6">
       <Image
-        src="/assets/images/logo2.png"
+        src="/assets/images/logo.png"
         alt="logo"
         width={200}
         height={60}
