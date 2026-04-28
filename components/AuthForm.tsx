@@ -24,10 +24,10 @@ type FormType = 'sign-in' | 'sign-up';
 
 const authFormSchema = (formType: FormType) => {
   return z.object({
-    email:  z.string().email("Please enter a valid email address"),
+    email:  z.string().min(10, "Required").email("Please enter a valid email address"),
     fullname: 
       formType === "sign-up"
-        ? z.string().min(3, "Full name should be at least 3 characters").max(50, "Full name should be at most 50 characters")
+        ? z.string().min(1, "Required").min(3, "Full name should be at least 3 characters").max(50, "Full name should be at most 50 characters")
         : z.string().optional(),
   })
 }

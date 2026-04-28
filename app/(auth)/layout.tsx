@@ -13,7 +13,7 @@ export default function AuthLayout({
                 </div>
                 {children}
             </section>
-            <section className="hidden bg-[var(--auth-side-bg)] p-7 w-1/2 items-center justify-center lg:flex xl:w-2/5 m-5 rounded-2xl shadow-[inset_0_0_80px_rgba(0,0,0,0.6)]">
+            <section className="hidden bg-[var(--auth-side-bg)] p-7 w-1/2 items-center justify-center lg:flex xl:w-2/5 m-5 rounded-2xl">
                 <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12 ">
                     <Logo />
 
