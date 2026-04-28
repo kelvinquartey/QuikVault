@@ -7,13 +7,13 @@ export default function AuthLayout({
 }){
     return(
         <div className="flex min-h-screen">
-            <section className="flex flex-1 flex-col items-center bg-white p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
+            <section className="flex flex-1 flex-col items-center p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
                 <div className="mb-16 lg:hidden flex justify-items-start">
                     <Logo variant="light"/>
                 </div>
                 {children}
             </section>
-            <section className="hidden bg-[var(--color-primary)] p-7 w-1/2 items-center justify-center lg:flex xl:w-2/5 m-5 rounded-2xl">
+            <section className="hidden bg-[var(--auth-side-bg)] p-7 w-1/2 items-center justify-center lg:flex xl:w-2/5 m-5 rounded-2xl shadow-[inset_0_0_80px_rgba(0,0,0,0.6)]">
                 <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12 -mt-9">
                     <Logo  variant="auth"/>
 
@@ -44,7 +44,7 @@ export default function AuthLayout({
                         ].map((feature, i) => (
                             <div
                             key={i}
-                            className="animate-fade-in bg-white/10 hover:bg-white/20 p-5 rounded-xl border border-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                            className="animate-fade-in bg-white/5 hover:bg-white/10 p-5 rounded-xl border border-white/10 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                             style={{ 
                                 animationDelay: `${i * 0.2}s`,
                                 animationFillMode: 'both' 
@@ -59,7 +59,7 @@ export default function AuthLayout({
                                         <h3 className="font-semibold text-white">
                                             {feature.title}
                                         </h3>
-                                        <p className="text-sm text-white/70 mt-1">
+                                        <p className="text-sm text-white/75 mt-1">
                                             {feature.desc}
                                         </p>
                                     </div>
