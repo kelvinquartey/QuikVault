@@ -9,13 +9,13 @@ export default function AuthLayout({
         <div className="flex min-h-screen">
             <section className="flex flex-1 flex-col items-center p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
                 <div className="mb-16 lg:hidden flex justify-items-start">
-                    <Logo variant="light"/>
+                    <Logo />
                 </div>
                 {children}
             </section>
             <section className="hidden bg-[var(--auth-side-bg)] p-7 w-1/2 items-center justify-center lg:flex xl:w-2/5 m-5 rounded-2xl shadow-[inset_0_0_80px_rgba(0,0,0,0.6)]">
-                <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12 -mt-9">
-                    <Logo  variant="auth"/>
+                <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12 ">
+                    <Logo />
 
                     <div className="-mt-7 space-y-5 text-white ">
                         <h1 className="h1">Manage your files effortlessly</h1>

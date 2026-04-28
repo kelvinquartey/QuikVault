@@ -1,42 +1,22 @@
 import Image from "next/image";
 
-type LogoVariant = "light" | "dark" | "auth";
-
-interface LogoProps {
-  variant?: LogoVariant;
-}
-
-export const Logo = ({ variant = "light" }: LogoProps) => {
-  const textStyles = {
-    light: {
-      quik: "text-[var(--color-dark-100)]",
-      vault: "text-[var(--color-primary)]",
-    },
-    dark: {
-      quik: "text-white",
-      vault: "text-[var(--color-primary)]",
-    },
-    auth: {
-      quik: "text-white",
-      vault: "text-white/80",
-    },
-  };
+export const Logo = () => {
 
   return (
-    <div className="flex items-center max-lg:-ml-22 max-lg:-mt-6">
+    <div className="flex items-center justify-center gap-2">
       <Image
-        src="/assets/images/logo.png"
+        src="/assets/images/logotest.png"
         alt="logo"
-        width={200}
-        height={60}
-        className="h-auto max-md:w-[180px]"
+        width={120}
+        height={40}
+        className="h-auto w-[100px] sm:w-[120px]"
       />
 
-      <h2 className="-ml-13 h1 -mt-4 logo tracking-tight">
-        <span className={`${textStyles[variant].quik}`}>
+      <h2 className="logo tracking-tight leading-none flex items-center">
+        <span className="text-[var(--logo-main)]">
           Quik
         </span>
-        <span className={`${textStyles[variant].vault}`}>
+        <span className="text-[var(--logo-accent)]">
           Vault
         </span>
       </h2>

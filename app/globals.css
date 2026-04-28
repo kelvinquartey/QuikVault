@@ -42,6 +42,10 @@
 
   --auth-side-bg: var(--color-primary);
 
+  /* Logo */
+  --logo-main: var(--color-dark-100);
+  --logo-accent: var(--color-primary);
+
   /* shadcn mapping */
   --primary: var(--color-primary);
   --primary-foreground: #ffffff;
@@ -102,6 +106,10 @@
 
     --border: #0f172a;
     --input: #0f172a;
+
+    /* Logo */
+    --logo-main: #ffffff;
+    --logo-accent: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -147,6 +155,11 @@
   /* Recharts fix */
   .recharts-responsive-container {
     height: initial !important;
+  }
+
+  /* Logo */
+  .logo span {
+    transition: color 0.25s ease;
   }
 }
 
