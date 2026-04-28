@@ -1,10 +1,108 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
-  --background: #F8FAFC; 
-  --foreground: #0F172A; 
+  --radius: 0.625rem;
 
-  --radius: 12px;
+  /* Base */
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+
+  /*Brand */
+  --color-primary: #2563EB;
+  --color-primary-hover: #0b45e5;
+  --color-primary-light: #F5F9FF;
+
+  /* Text */
+  --color-dark-100: #0F172A;
+  --color-dark-200: #1E293B;
+
+  --color-light-100: #334155;
+  --color-light-200: #A3B2C7;
+  --color-light-300: #F2F5F9;
+  --color-light-400: #F2F4F8;
+
+  /* Neutrals */
+  --color-gray-100: #F8FAFC;
+  --color-gray-200: #E2E8F0;
+  --color-gray-300: #CBD5E1;
+  --color-gray-400: #94A3B8;
+  --color-gray-500: #475569;
+
+  /* Status */
+  --color-accent: #06B6D4;
+  --color-success: #22C55E;
+  --color-error: #EF4444 ;
+  --color-warning: #F59E0B;
+
+  /* Shadows */
+  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-dropdown: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.3);
+
+  --auth-side-bg: var(--color-primary);
+
+  /* shadcn mapping */
+  --primary: var(--color-primary);
+  --primary-foreground: #ffffff;
+
+  --secondary: var(--color-gray-100);
+  --secondary-foreground: var(--color-dark-100);
+
+  --accent: var(--color-accent);
+  --accent-foreground: #ffffff;
+
+  --destructive: var(--color-error);
+
+  --border: var(--color-gray-200);
+  --input: var(--color-gray-200);
+  --ring: var(--color-primary);
+
+  --card: #ffffff;
+  --card-foreground: var(--color-dark-100);
+
+  --popover: #ffffff;
+  --popover-foreground: var(--color-dark-100);
+}
+
+
+
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #F8FAFC;
+
+    /* Text */
+    --color-dark-100: #F8FAFC;
+    --color-dark-200: #E2E8F0;
+
+    --color-light-100: #E2E8F0;
+    --color-light-200: #94A3B8;
+    --color-light-300: #1E293B;
+    --color-light-400: #0f172a;
+
+    /* Neutrals */
+    --color-gray-100: #020617;
+    --color-gray-200: #050b25;
+    --color-gray-300: #0f172a;
+    --color-gray-400: #334155;
+    --color-gray-500: #64748B;
+
+    --auth-side-bg: #050b25;
+
+    /* Surfaces */
+    --card: #050b25;
+    --card-foreground: #F8FAFC;
+
+    --popover: #050b25;
+    --popover-foreground: #F8FAFC;
+
+    --border: #0f172a;
+    --input: #0f172a;
+  }
 }
 
 @layer base {
@@ -12,7 +110,17 @@
     @apply scroll-smooth;
   }
 
-  /* Custom scrollbar */
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  /* Scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
     height: 3px;
@@ -24,10 +132,9 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #fa7275;
+    background: #cbd5e1;
   }
 
-  /* Remove scrollbar */
   .remove-scrollbar::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -37,11 +144,12 @@
     background: transparent;
   }
 
-  /* Charts fix */
+  /* Recharts fix */
   .recharts-responsive-container {
     height: initial !important;
   }
 }
+
 
 @theme {
   /* Fonts */
@@ -50,39 +158,6 @@
   --font-mono: var(--font-geist-mono);
   --font-grotesk: var(--font-grotesk);
 
-  /*Primary Brand */
-  --color-primary: #2563EB;    
-  --color-primary-hover: #1D4ED8;
-  --color-primary-light: #F5F9FF;
-
-  /*Text / Dark */
-  --color-dark-100: #0F172A;
-  --color-dark-200: #1E293B;
-
-  /*Neutrals */
-  --color-gray-100: #F8FAFC;
-  --color-gray-200: #E2E8F0;
-  --color-gray-300: #CBD5E1;
-  --color-gray-400: #94A3B8;
-  --color-gray-500: #475569;
-
-  /*Accent & Status */
-  --color-accent: #06B6D4;
-  --color-success: #22C55E;
-  --color-error: #EF4444;
-  --color-warning: #F59E0B;
-
-  /* Shadows */
-  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.05);
-  --shadow-dropdown: 0 8px 24px rgba(15, 23, 42, 0.08);
-  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.3);
-
-  /* Radius */
-  --radius-xl: 16px;
-  --radius-lg: 12px;
-  --radius-md: 10px;
-  --radius-sm: 8px;
-
   /* Motion */
   --animate-fade-in: fade-in 0.2s ease-out;
   --animate-slide-in: slide-in 0.2s ease-out;
@@ -90,6 +165,9 @@
 
   /* Layout */
   --spacing-container: 1280px;
+
+  /* Shadows */
+  --shadow-drop-1: 0px 10px 30px 0px rgba(66, 71, 97, 0.1);
 
   /* Keyframes */
   @keyframes fade-in {
@@ -108,8 +186,8 @@
   }
 }
 
-@layer utilities {
 
+@layer utilities {
   /* Layout */
   .container {
     @apply mx-auto max-w-7xl px-5;
@@ -139,26 +217,88 @@
   .caption { @apply text-[0.75rem] leading-4 font-normal; }
   .overline { @apply text-[0.625rem] leading-[0.875rem] font-normal; }
 
-  /*Button (SAFE version using CSS variables)*/
-  .primary-btn {
-    @apply transition-all rounded-full text-[0.875rem] leading-5 font-medium;
-    background-color: var(--color-primary);
+  /* AuthForm */
+  .auth-form {
+    @apply flex w-full max-w-[580px] flex-col justify-center space-y-7 lg:space-y-9;
   }
 
-  .primary-btn:hover {
-    background-color: var(--color-primary-hover);
+  .form-title {
+    @apply text-[2.125rem] leading-[2.625rem] font-bold text-center md:text-left;
+    color: var(--color-light-100);
   }
 
-  /*Shadcn helpers*/
-  .shad-no-focus {
-    @apply outline-none ring-offset-transparent focus:ring-transparent focus:ring-offset-0 focus-visible:outline-none focus-visible:ring-0;
+  .error-message {
+    @apply text-[0.875rem] mx-auto w-fit rounded-xl px-8 py-4 text-center;
+    background-color: rgba(239, 68, 68, 0.08);
+    color: var(--color-error);
+  }
+
+  /*shadcn overrides*/
+  .shad-form-item {
+    @apply flex flex-col justify-center rounded-xl border px-4 py-3 shadow-drop-1 shadow-lg transition-all ;
+    border-color: var(--border);
+    background-color: var(--card);
+  }
+
+  .shad-form-item:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  }
+
+  .shad-form-item[data-invalid="true"] {
+    border-color: var(--color-error);
+  }
+
+  .shad-form-item[data-invalid="true"]:focus-within {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  }
+
+  .shad-form-label {
+    @apply text-[var(--color-light-100)] pt-2 text-[0.875rem] leading-5 font-normal w-full;
   }
 
   .shad-input {
-    @apply border-none shadow-none p-0 text-[0.875rem] leading-5 font-normal;
+    @apply border-none shadow-none p-0 text-[0.875rem] leading-5 outline-none;
+    caret-color: var(--color-primary);
+    transition: all 0.2s ease;
   }
 
-  /* Nav icons */
+  .shad-input::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  .shad-input:focus,
+  .shad-input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .shad-form-message {
+    @apply text-[0.875rem] leading-5 ml-4;
+    color: var(--color-error);
+  }
+
+  .shad-form-button-submit {
+    @apply w-full text-[1rem] font-medium p-7 rounded-full transition-all;
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .shad-form-button-submit:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .shad-form-button-submit:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  .shad-no-focus {
+    @apply outline-none focus:ring-0 focus-visible:ring-0;
+  }
+
+  /* Nav */
   .nav-icon {
     @apply w-6 invert opacity-25;
   }
@@ -167,7 +307,7 @@
     @apply invert-0 opacity-100;
   }
 
-  /* Generic UI */
+  /* Generic */
   .thumbnail {
     @apply flex items-center justify-center size-[50px] min-w-[50px] overflow-hidden rounded-full;
   }
@@ -176,6 +316,7 @@
     @apply size-full object-cover object-center;
   }
 
+  /* Logo */
   .logo {
     font-family: var(--font-grotesk);
     @apply font-extrabold;
@@ -189,16 +330,4 @@
   .logo-light span:last-child {
     opacity: 0.8;
   }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0F172A;
-    --foreground: #F8FAFC;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
 }
