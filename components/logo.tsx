@@ -5,7 +5,7 @@ export const Logo = () => {
   return (
     <div className="flex items-center justify-center gap-2">
       <Image
-        src="/assets/images/logotest.png"
+        src="/assets/images/logo.png"
         alt="logo"
         width={120}
         height={40}
