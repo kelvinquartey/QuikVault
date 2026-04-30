@@ -29,6 +29,9 @@
   --color-gray-400: #94A3B8;
   --color-gray-500: #475569;
 
+  --muted: 210 40% 96%;
+  --muted-foreground: var(--color-light-100);
+
   /* Status */
   --color-accent: #06B6D4;
   --color-success: #22C55E;
@@ -39,6 +42,7 @@
   --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.05);
   --shadow-dropdown: 0 8px 24px rgba(15, 23, 42, 0.08);
   --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  --shadow-elevation: 0 4px 12px rgba(0, 0, 0, 0.08);
 
   --auth-side-bg: var(--color-primary);
 
@@ -58,7 +62,7 @@
 
   --destructive: var(--color-error);
 
-  --border: var(--color-gray-200);
+  --border: var(--color-gray-300);
   --input: var(--color-gray-200);
   --ring: var(--color-primary);
 
@@ -97,6 +101,9 @@
 
     --auth-side-bg: #050b25;
 
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
     /* Surfaces */
     --card: #050b25;
     --card-foreground: #F8FAFC;
@@ -106,6 +113,9 @@
 
     --border: #0f172a;
     --input: #0f172a;
+
+    /* Shadows */
+    --shadow-elevation: 0 4px 12px rgba(255, 255, 255, 0.08);
 
     /* Logo */
     --logo-main: #ffffff;
@@ -310,6 +320,72 @@
   .shad-no-focus {
     @apply outline-none focus:ring-0 focus-visible:ring-0;
   }
+
+  .shad-alert-dialog {
+    @apply space-y-6 w-full max-w-md rounded-2xl px-6 py-8 shadow-lg border;
+    background-color: var(--background);
+    color: var(--foreground);
+    border-color: var(--border);
+    animation: fade-in 0.2s ease-out;
+    backdrop-filter: blur(8px);
+  }
+
+  .shad-otp {
+    @apply flex w-full justify-center gap-2;
+  }
+
+  .shad-otp-slot {
+    @apply flex items-center justify-center text-2xl md:text-3xl font-semibold rounded-xl border transition-all;
+    width: 48px;
+    height: 56px;
+
+    background-color: var(--card);
+    color: var(--foreground);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-elevation);
+  }
+  
+  .shad-otp-slot[data-active="true"] {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    transform: scale(1.05);
+  }
+
+  .shad-otp-slot[data-filled="true"] {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+  }
+
+  .shad-submit-btn {
+    @apply w-full h-12 rounded-full font-medium flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer;
+
+    background-color: var(--color-primary);
+    color: white;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .shad-submit-btn:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .shad-submit-btn:active {
+    transform: scale(0.97);
+  }
+
+  .shad-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .shad-submit-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+  }
+  
 
   /* Nav */
   .nav-icon {

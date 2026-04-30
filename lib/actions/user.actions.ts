@@ -1,10 +1,11 @@
 "use server";
-import { Query, ID } from "node-appwrite";
+import { Query, ID, Client, Account } from "node-appwrite";
 import { createAdminClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
+import { cookies } from "next/headers";
 
-const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string) => {
     const { databases } = await createAdminClient();
 
     const result = await databases.listDocuments(
@@ -21,7 +22,7 @@ const handleError = (error: unknown, message: string) => {
     throw new Error(message);
 }
 
-const sendEmailOTP = async (email: string) => {
+export const sendEmailOTP = async (email: string) => {
     const { account } = await createAdminClient();
 
     try {
@@ -38,83 +39,91 @@ const sendEmailOTP = async (email: string) => {
 }
 
 export const createAccount = async ({
-    fullName,
-    email,
+  fullName,
+  email,
 }: {
-    fullName: string;
-    email: string;
+  fullName?: string;
+  email: string;
 }) => {
-    let createdUserId: string | null = null;
+  try {
+    const { databases } = await createAdminClient();
 
-    try {
-        const existingUser = await getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
 
-        if (existingUser) {
-        return {
-            success: false,
-            message: "An account with this email already exists. Please sign in.",
-        };
+    const accountId = await sendEmailOTP(email);
+    if (!accountId) throw new Error("Failed to send OTP");
+
+    const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      fullName || email
+    )}&background=2563eb&color=fff`;
+
+    if (!existingUser) {
+      await databases.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userTableId,
+        ID.unique(),
+        {
+          fullName: fullName || "",
+          email,
+          avatar,
+          accountId,
         }
+      );
+    } else {
+      await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userTableId,
+        existingUser.$id,
+        { accountId }
+      );
+    }
 
-        const { databases } = await createAdminClient();
+    return parseStringify({
+      success: true,
+      accountId,
+      isNewUser: !existingUser,
+    });
 
-        const generatedAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            fullName
-        )}&background=2563eb&color=fff`;
+  } catch (error: any) {
+    console.error("Create Account Error:", error);
 
-        const uploadedAvatar: string | null = null;
+    return {
+      success: false,
+      message: error.message || "Something went wrong",
+    };
+  }
+};
 
-        const avatar = uploadedAvatar ?? generatedAvatar;
+export const verifySecret = async ({
+    accountId, 
+    otp,
+} : {
+    accountId: string;
+    otp: string;
+}) => {
+    try{
+        const {account} = await createAdminClient();
 
-        const newUser = await databases.createDocument(
-            appwriteConfig.databaseId,
-            appwriteConfig.userTableId,
-            ID.unique(),
-            {
-                fullName,
-                email,
-                avatar,
-            }
-        );
+        const session = await account.createSession(accountId, otp);
 
-        createdUserId = newUser.$id;
-
-        
-        const accountId = await sendEmailOTP(email);
-        if (!accountId) throw new Error("Failed to send OTP");
-
-        await databases.updateDocument(
-            appwriteConfig.databaseId,
-            appwriteConfig.userTableId,
-            newUser.$id,
-            { accountId }
-        );
+        (await cookies()).set("appwrite-session", session.secret, {
+            path: '/',
+            httpOnly: true,
+            sameSite: "strict",
+            secure: true,
+        });
 
         return parseStringify({
-            success: true,
-            accountId,
+        success: true,
+        sessionId: session.$id,
         });
 
     } catch (error: any) {
-        console.error("Account Creation Error:", error);
-
-        if (createdUserId) {
-            try {
-                const { databases } = await createAdminClient();
-
-                await databases.deleteDocument(
-                appwriteConfig.databaseId,
-                appwriteConfig.userTableId,
-                createdUserId
-                );
-            } catch (cleanupError) {
-                console.error("Rollback failed:", cleanupError);
-            }
-        }
+        console.error("Verify OTP Error:", error);
 
         return {
-            success: false,
-            message: error.message || "An unexpected error occurred. Please try again.",
+        success: false,
+        message: error.message || "Invalid or expired code",
         };
     }
-};
+}

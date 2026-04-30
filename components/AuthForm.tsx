@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form"
 import { useState } from "react";
 import { createAccount } from "@/lib/actions/user.actions";
+import OtpModal from "./OTPModal";
 
 
 type FormType = 'sign-in' | 'sign-up';
@@ -41,6 +42,8 @@ export const AuthForm = ({type}: {type: FormType}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [accountId, setAccountId] = useState<string | null>(null);
+
+  const [showOtpModal, setShowOtpModal] = useState(false);
 
   const formSchema = authFormSchema(type)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,9 +72,7 @@ export const AuthForm = ({type}: {type: FormType}) => {
 
         console.log("Account created:", response.accountId);
         setAccountId(response.accountId);
-
-        // Optional: reset form
-        // form.reset();
+        setShowOtpModal(true);
       }
 
       if (type === "sign-in") {
@@ -183,6 +184,17 @@ export const AuthForm = ({type}: {type: FormType}) => {
           </div>
         </form>
       </Form>
+
+      {accountId && (
+        <OtpModal
+          open={showOtpModal}
+          setOpen={setShowOtpModal}
+          email={form.getValues("email")}
+          accountId={accountId}
+          initialCountdown={30}
+        />
+      )}
+
     </>
   )
 }
