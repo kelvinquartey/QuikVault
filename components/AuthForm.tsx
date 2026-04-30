@@ -18,37 +18,75 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useState } from "react";
+import { createAccount } from "@/lib/actions/user.actions";
 
 
 type FormType = 'sign-in' | 'sign-up';
 
 const authFormSchema = (formType: FormType) => {
   return z.object({
-    email:  z.string().min(10, "Required").email("Please enter a valid email address"),
-    fullname: 
+    email:  z.string().min(1, "Required").email("Please enter a valid email address"),
+    fullName: 
       formType === "sign-up"
-        ? z.string().min(1, "Required").min(3, "Full name should be at least 3 characters").max(50, "Full name should be at most 50 characters")
+        ? z.string()
+          .min(1, "Required")
+          .min(3, "Full name should be at least 3 characters")
+          .max(50, "Full name should be at most 50 characters")
         : z.string().optional(),
   })
 }
 
 export const AuthForm = ({type}: {type: FormType}) => {
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, seterrorMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [accountId, setAccountId] = useState<string | null>(null);
 
   const formSchema = authFormSchema(type)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullname: "",
+      fullName: "",
       email: "",
     }
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  const onSubmit = async(values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      if (type === "sign-up") {
+        const response = await createAccount({
+          fullName: values.fullName!,
+          email: values.email,
+        });
+
+        if (!response.success) {
+          setErrorMessage(response.message);
+          return;
+        }
+
+        console.log("Account created:", response.accountId);
+        setAccountId(response.accountId);
+
+        // Optional: reset form
+        // form.reset();
+      }
+
+      if (type === "sign-in") {
+        // Will implement sign-in later
+        console.log("Sign in flow coming next...");
+      }
+
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
+
 
   return (
     <>
@@ -63,7 +101,7 @@ export const AuthForm = ({type}: {type: FormType}) => {
           {type === "sign-up" &&
             <FormField
               control={form.control}
-              name="fullname"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <div className="shad-form-item">
@@ -73,6 +111,10 @@ export const AuthForm = ({type}: {type: FormType}) => {
                         placeholder="Enter your full name"
                         className="shad-input"
                         {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          setErrorMessage("");
+                        }}
                         value={field.value ?? ""}
                       />
                     </FormControl>
@@ -96,6 +138,10 @@ export const AuthForm = ({type}: {type: FormType}) => {
                       placeholder="Enter your full email"
                       className="shad-input"
                       {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setErrorMessage("");
+                      }}
                     />
                   </FormControl>
                 </div>
@@ -116,7 +162,7 @@ export const AuthForm = ({type}: {type: FormType}) => {
               alt="loading"
               width={24}
               height={24}
-              className="ml-2 animate-spin"/>
+              className="animate-spin"/>
            )}
           </Button>
 
