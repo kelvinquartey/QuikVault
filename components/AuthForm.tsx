@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { useState } from "react";
-import { createAccount } from "@/lib/actions/user.actions";
+import { createAccount, signInUser } from "@/lib/actions/user.actions";
 import OtpModal from "./OTPModal";
 
 
@@ -54,39 +54,33 @@ export const AuthForm = ({type}: {type: FormType}) => {
     }
   })
 
-  const onSubmit = async(values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setErrorMessage("");
 
     try {
-      if (type === "sign-up") {
-        const response = await createAccount({
-          fullName: values.fullName!,
-          email: values.email,
-        });
+      setAccountId(null);
+      setShowOtpModal(false);
 
-        if (!response.success) {
-          setErrorMessage(response.message);
-          return;
-        }
+      const response = type === "sign-up" 
+        ? await createAccount({ fullName: values.fullName!, email: values.email })
+        : await signInUser({ email: values.email });
 
-        console.log("Account created:", response.accountId);
-        setAccountId(response.accountId);
-        setShowOtpModal(true);
+      if (!response.success) {
+        setErrorMessage(response.message || "Authentication failed");
+        return;
       }
 
-      if (type === "sign-in") {
-        // Will implement sign-in later
-        console.log("Sign in flow coming next...");
-      }
+      setAccountId(response.accountId);
+      setShowOtpModal(true);
 
     } catch (error) {
-      console.error(error);
+      console.error("Authentication error:", error);
       setErrorMessage("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
 
   return (

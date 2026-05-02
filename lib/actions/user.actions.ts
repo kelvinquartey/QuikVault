@@ -168,3 +168,33 @@ export const signOutUser = async () => {
   redirect('/sign-in')
   
 }
+
+export const signInUser = async ({ email }: { email: string }) => {
+  try {
+    const existingUser = await getUserByEmail(email);
+
+    if (!existingUser) {
+      return {
+        success: false,
+        message: "User not found. Please sign up.",
+      };
+    }
+
+    const accountId = await sendEmailOTP(email);
+    
+    if (!accountId) throw new Error("Failed to send OTP");
+
+    return parseStringify({ 
+      success: true, 
+      accountId: existingUser.accountId 
+    });
+
+  } catch (error: any) {
+    console.error("Sign-in Error:", error);
+    
+    return {
+      success: false,
+      message: error.message || "Failed to sign in. Please try again.",
+    };
+  }
+};
