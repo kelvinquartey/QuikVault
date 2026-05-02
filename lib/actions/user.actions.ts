@@ -1,6 +1,6 @@
 "use server";
 import { Query, ID, Client, Account } from "node-appwrite";
-import { createAdminClient } from "../appwrite";
+import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
 import { cookies } from "next/headers";
@@ -95,35 +95,57 @@ export const createAccount = async ({
 };
 
 export const verifySecret = async ({
-    accountId, 
-    otp,
+  accountId, 
+  otp,
 } : {
-    accountId: string;
-    otp: string;
+  accountId: string;
+  otp: string;
 }) => {
-    try{
-        const {account} = await createAdminClient();
+  try{
+    const {account} = await createAdminClient();
 
-        const session = await account.createSession(accountId, otp);
+    const session = await account.createSession(accountId, otp);
 
-        (await cookies()).set("appwrite-session", session.secret, {
-            path: '/',
-            httpOnly: true,
-            sameSite: "strict",
-            secure: true,
-        });
+    (await cookies()).set("appwrite-session", session.secret, {
+      path: '/',
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
 
-        return parseStringify({
-        success: true,
-        sessionId: session.$id,
-        });
+    return parseStringify({
+      success: true,
+      sessionId: session.$id,
+    });
 
-    } catch (error: any) {
-        console.error("Verify OTP Error:", error);
+  } catch (error: any) {
+    console.error("Verify OTP Error:", error);
 
-        return {
-        success: false,
-        message: error.message || "Invalid or expired code",
-        };
-    }
+    return {
+      success: false,
+      message: error.message || "Invalid or expired code",
+    };
+  }
 }
+
+export const getCurrentUser = async () => {
+  try {
+    const { databases, account } = await createSessionClient();
+
+    const currentAccount = await account.get();
+
+    const userResult = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userTableId,
+      [Query.equal("accountId", currentAccount.$id)]
+    );
+
+    if (userResult.total <= 0) return null;
+
+    return parseStringify(userResult.documents[0]);
+
+  } catch (error) {
+    console.error("Get Current User Error:", error);
+    return null;
+  }
+};
