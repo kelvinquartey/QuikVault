@@ -34,7 +34,7 @@ function SubmitButton() {
               className="w-6 ml-0.5"
             />
 
-            {true && (
+            {pending && (
               <Image 
                 src="/assets/icons/loader.svg" 
                 alt="loading"
