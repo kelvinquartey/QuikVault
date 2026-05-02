@@ -417,7 +417,7 @@
   }
 
   .sign-out-button {
-    @apply flex items-center justify-center h-[52px] min-w-[54px] items-center rounded-full bg-[var(--color-primary)]/10 p-0 text-[var(--color-primary-light)] shadow-none transition-all hover:bg-[var(--color-primary)]/20 cursor-pointer;
+    @apply flex items-center justify-center h-[52px] min-w-[54px] items-center rounded-2xl bg-[var(--color-primary)]/10 p-0 text-[var(--color-primary-light)] shadow-none transition-all hover:bg-[var(--color-primary)]/20 cursor-pointer;
   }
 
   /* Sidebar */
@@ -535,7 +535,7 @@
   /* Mobile Navigation */
   .mobile-header {
     @apply flex h-[60px] justify-between px-5 sm:hidden
-      bg-[var(--main-background)];
+      bg-[var(--card)]; 
   }
 
   .header-user {
@@ -576,9 +576,9 @@
           rounded-full transition-all cursor-pointer shadow-none hover:bg-[var(--color-primary)]/20
           bg-[var(--color-primary)]/10 
           text-[var(--color-primary)];
-  } 
-
+  }
 
 }
+
 
 

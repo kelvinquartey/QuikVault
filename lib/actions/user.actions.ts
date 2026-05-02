@@ -4,6 +4,7 @@ import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const getUserByEmail = async (email: string) => {
     const { databases } = await createAdminClient();
@@ -149,3 +150,21 @@ export const getCurrentUser = async () => {
     return null;
   }
 };
+
+export const signOutUser = async () => {
+  
+  try{
+    const {account} = await createSessionClient();
+
+    await account.deleteSession('current');
+
+  } catch (error){
+    console.error("Failed to sign out user", error);
+  } 
+
+  const cookieStore = await cookies();
+  cookieStore.delete("appwrite-session");
+  
+  redirect('/sign-in')
+  
+}

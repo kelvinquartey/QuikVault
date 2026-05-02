@@ -17,6 +17,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import FileUploader from "./FileUploader"
 import { Button } from "./ui/button"
+import { signOutUser } from "@/lib/actions/user.actions"
 
 interface Props {
   ownerId: string,
@@ -37,6 +38,13 @@ const MobileNavigation = ({
 
   const [open, setOpen] = useState(false)
   const pathname = usePathname();
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await signOutUser();
+  };
 
 
   return (
@@ -99,15 +107,17 @@ const MobileNavigation = ({
             <Button 
               type="submit"
               className="h5 mobile-sign-out-button"
-              onClick={() => {}}
+              onClick={handleLogout}
+              disabled={isLoggingOut}
             >
               <Image 
-                src="/assets/icons/logout.svg" 
+                src={isLoggingOut ? "/assets/icons/loader.svg" : "/assets/icons/logout.svg"}
                 alt="logout"
                 width={24}
                 height={24}
+                className={isLoggingOut ? "animate-spin" : ""}
               />
-              <p>Logout</p>
+              <p>{isLoggingOut ? "Logging out..." : "Logout"}</p>
             </Button>
           </div>
 
