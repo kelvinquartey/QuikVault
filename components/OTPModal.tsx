@@ -26,12 +26,14 @@ const OtpModal = ({
     accountId,
     email,
     initialCountdown = 0, 
+    type,
 }: {
     open: boolean;
     setOpen: (open: boolean) => void;
     accountId: string;
     email: string;
     initialCountdown?: number;
+    type: "sign-in" | "sign-up";
 }) => {
     
     const router = useRouter();
@@ -123,10 +125,12 @@ const OtpModal = ({
                     </button>
                     <AlertDialogHeader className="flex flex-col items-center justify-center text-center space-y-2">
                         <AlertDialogTitle className="h2 text-center block mx-auto">
-                            Verify your email
+                            {type === "sign-in" ? "Enter your login code" : "Verify your email"}
                         </AlertDialogTitle>
                         <AlertDialogDescription className="subtitle-2 text-center block mx-auto text-[var(--color-light-100)]">
-                            Enter the 6-digit code sent to your email.
+                            {type === "sign-in"
+                            ? "Enter the 6-digit login code sent to your email."
+                            : "Enter the 6-digit code sent to your email to verify your account."}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <div className="flex justify-center mt-4">

@@ -186,6 +186,7 @@ export const AuthForm = ({type}: {type: FormType}) => {
           email={form.getValues("email")}
           accountId={accountId}
           initialCountdown={30}
+          type={type}
         />
       )}
 
