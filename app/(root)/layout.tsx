@@ -18,7 +18,7 @@ export default async function Layout({
         <Sidebar user={user}/>
 
         <section className="flex h-full flex-1 flex-col">
-            <MobileNavigation />
+            <MobileNavigation {...user}/>
             <Header />
 
             <div className="main-content remove-scrollbar">{children}</div>

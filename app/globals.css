@@ -517,5 +517,68 @@
     opacity: 0.8;
   }
 
+  /* MobileLogo */
+  .mobile-logo {
+    font-family: var(--font-grotesk);
+    @apply font-extrabold;
+    font-size: clamp(30px, 4vw, 35px);
+  }
+
+  .mobile-logo-light {
+    color: white;
+  }
+
+  .mobile-logo-light span:last-child {
+    opacity: 0.8;
+  }
+
+  /* Mobile Navigation */
+  .mobile-header {
+    @apply flex h-[60px] justify-between px-5 sm:hidden
+      bg-[var(--main-background)];
+  }
+
+  .header-user {
+    @apply my-3 flex items-center gap-3 rounded-xl px-3 py-2 
+          bg-[var(--color-primary)]/10 
+          dark:bg-[var(--color-primary)]/20
+          text-[var(--color-light-100)];
+  }
+
+  .header-user-avatar {
+    @apply aspect-square w-10 rounded-full object-cover ring-2 
+          ring-[var(--color-primary)]/30;
+  }
+
+  .mobile-nav {
+    @apply flex flex-1 gap-1 text-[var(--color-primary)];
+  }
+  .mobile-nav-list {
+    @apply flex flex-1 flex-col gap-4;
+  }
+
+  .mobile-nav-item {
+    @apply flex items-center gap-4 w-full px-5 h-[52px] 
+          rounded-xl transition-all cursor-pointer
+          text-[var(--color-light-100)];
+  }
+
+  .mobile-nav-item:hover {
+    background-color: rgba(92, 117, 241, 0.1);
+  }
+
+  .dark .mobile-nav-item:hover {
+    background-color: rgba(97, 121, 241, 0.15);
+  } 
+
+  .mobile-sign-out-button {
+    @apply flex items-center gap-4 w-full h-[52px] px-6 
+          rounded-full transition-all cursor-pointer shadow-none hover:bg-[var(--color-primary)]/20
+          bg-[var(--color-primary)]/10 
+          text-[var(--color-primary)];
+  } 
+
+
 }
+
 
