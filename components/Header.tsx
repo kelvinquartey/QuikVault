@@ -54,7 +54,12 @@ function SubmitButton() {
   );
 }
 
-const Header = () => {
+const Header = ({
+  userId, accountId
+}: {
+  userId: string, 
+  accountId: string
+}) => {
     const { pending } = useFormStatus();
 
   return (
@@ -62,7 +67,10 @@ const Header = () => {
         <Search />
 
         <div className="header-wrapper flex-center">
-            <FileUploader />
+            <FileUploader 
+              ownerId={userId}
+              accountId={accountId}
+            />
 
             <form action={signOutUser}>
                 <SubmitButton/>

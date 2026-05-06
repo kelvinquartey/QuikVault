@@ -3,6 +3,7 @@ import MobileNavigation from '@/components/MobileNavigation'
 import Sidebar from '@/components/Sidebar'
 import { getCurrentUser } from '@/lib/actions/user.actions'
 import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/sonner"
 
 export default async function Layout({
     children,
@@ -19,10 +20,15 @@ export default async function Layout({
 
         <section className="flex h-full flex-1 flex-col">
             <MobileNavigation {...user}/>
-            <Header />
+            <Header 
+                userId={user.$id}   
+                accountId={user.accountId}
+            />
 
             <div className="main-content remove-scrollbar">{children}</div>
         </section>
+
+        <Toaster />
     </main>
   )
 }
