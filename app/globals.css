@@ -19,7 +19,7 @@
   --color-dark-200: #1E293B;
 
   --color-light-100: #334155;
-  --color-light-200: #A3B2C7;
+  --color-light-200: #727f91;
   --color-light-300: #F2F5F9;
   --color-light-400: #F2F4F8;
 
@@ -627,6 +627,25 @@
   }
   .thumbnail-image {
     @apply size-full object-cover object-center rounded-xl;
+  }
+
+  /* Type page */
+  .page-container {
+    @apply mx-auto flex w-full max-w-7xl flex-col items-center gap-8;
+  }
+  .total-size-section {
+    @apply flex mt-2 flex-col justify-between sm:flex-row sm:items-center;
+  }
+  .file-list {
+    @apply grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+  .sort-container {
+    @apply mt-5 flex items-center sm:mt-0 sm:gap-3;
+  }
+
+  /* Dashboard */
+  .empty-list {
+    @apply text-[1rem] leading-6 font-normal mt-10 text-center text-[var(--color-light-200)];
   }
 
 
