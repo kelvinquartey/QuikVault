@@ -15,7 +15,7 @@ declare global{
     extension: string;
     url: string;
     size: number;
-    owner: string;
+    owner: UserDocument;
     accountId: string;
     users: string[];
     bucketFileId: string;

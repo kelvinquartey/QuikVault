@@ -1,7 +1,6 @@
 import Card from "@/components/Card";
 import Sort from "@/components/Sort";
 import { getFiles } from "@/lib/actions/file.actions";
-import { Models } from "node-appwrite";
 
 const page =  async({params}: SearchParamProps) => {
     const type = ((await params)?.type as string) || "";

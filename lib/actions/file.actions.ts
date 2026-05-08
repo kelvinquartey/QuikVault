@@ -82,7 +82,14 @@ const createQueries = (currentUser: UserDocument) => {
         Query.or([
             Query.equal("owner", [currentUser.$id]),
             Query.contains("users", [currentUser.email]),
-        ])
+        ]),
+
+        Query.select([
+            "*",
+            "owner.fullName",
+            "owner.email",
+            "owner.avatar",
+        ]),
     ];
 
     //ADD: search, sort, limits later
@@ -106,7 +113,7 @@ export const getFiles = async () => {
             queries,
         );
 
-        console.log({ files });
+        // console.log({ files });
 
         return parseStringify(files);
         
