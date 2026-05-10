@@ -4,11 +4,11 @@ import React from 'react'
 import Thumbnail from "./Thumbnail";
 import { constructFileUrl, convertFileSize } from "@/lib/utils";
 import FormattedDateTime from "./FormattedDateTime";
+import ActionDropdown from "./ActionDropdown";
 
 const Card = ({ file }: {file: FileDocument}) => {
 
   const fileUrl = constructFileUrl(file.bucketFileId);
-  console.log(file.owner)
 
   return (
     <Link href={fileUrl} target="_blank" className="file-card">
@@ -22,8 +22,7 @@ const Card = ({ file }: {file: FileDocument}) => {
         />
 
         <div className="flex flex-col items-end justify-between">
-          {/* Implement ActionDropdown here */}
-          Adn
+          <ActionDropdown file={file} />
 
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
