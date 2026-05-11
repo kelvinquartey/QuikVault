@@ -694,6 +694,11 @@
     transition-all duration-200;
   }
 
+  /* ActionsModalContent */
+  .file-details-thumbnail {
+    @apply !mb-1 flex items-center gap-3 rounded-xl border border-[var(--color-light-200)]/40 bg-[var(--color-light-400)]/50 p-3;
+  }
+
 
 }
 

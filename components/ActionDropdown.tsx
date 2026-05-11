@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { renameFile } from "@/lib/actions/file.actions"
 import { usePathname } from "next/navigation"
 import { toast } from "sonner"
+import { FileDetails } from "./ActionsModalContent"
 
 const ActionDropdown = ({file}: {file:FileDocument}) => {
 
@@ -119,6 +120,7 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                         
                     />
                 )}
+                {value === "details" && <FileDetails file={file} />}
                 </DialogHeader>
                 {["rename", "delete", "share"].includes(value) && (
                     <DialogFooter className="flex flex-col gap-3 md:flex-row">
