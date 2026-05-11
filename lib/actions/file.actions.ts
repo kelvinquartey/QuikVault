@@ -121,3 +121,46 @@ export const getFiles = async () => {
         handleError(error, "Failed to get files");
     }
 };
+
+export const renameFile = async ({
+    fileId,
+    name,
+    extension,
+    path,
+}: RenameFileProps) => {
+    const { databases } = await createAdminClient();
+
+    try {
+        const trimmedName = name.trim();
+
+        if (!trimmedName) {
+            return { success: false, message: "File name cannot be empty" };
+        }
+
+        const baseName = trimmedName.endsWith(`.${extension}`)
+            ? trimmedName.slice(0, -(extension.length + 1))
+            : trimmedName;
+            
+        const newName = `${baseName}.${extension}`;
+        const updatedFile = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.filesTableId,
+            fileId,
+            {
+                name: newName,
+            },
+        );
+
+        revalidatePath(path);
+        return parseStringify({ 
+            success: true, 
+            ...updatedFile, 
+        });
+    } catch (error) {
+        console.error("Rename error:", error);
+        return { 
+            success: false, 
+            message: "Failed to rename file" 
+        };
+    }
+};

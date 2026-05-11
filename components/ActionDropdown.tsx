@@ -3,10 +3,8 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter
 } from "@/components/ui/dialog"
 import {
@@ -18,13 +16,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { actionsDropdownItems } from "@/constants"
 import Link from "next/link"
 import { constructDownloadUrl } from "@/lib/utils"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { renameFile } from "@/lib/actions/file.actions"
+import { usePathname } from "next/navigation"
+import { toast } from "sonner"
 
 const ActionDropdown = ({file}: {file:FileDocument}) => {
 
@@ -34,6 +35,12 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
     const [name, setName] = useState(file.name);
     const [isLoading, setIsLoading] = useState(false);
 
+    const path = usePathname();
+
+    useEffect(() => {
+        setName(file.name);
+    }, [file.name]);
+
     const closeAllModals = () => {
         setIsModalOpen(false);
         setIsDropdownOpen(false);
@@ -41,7 +48,57 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
 
     }
 
-    const handleAction = async () => {}
+    const handleAction = async () => {
+        if (!action) return;
+
+        setIsLoading(true);
+
+        try {
+            const actions = {
+            rename: () =>
+                renameFile({
+                fileId: file.$id,
+                name,
+                extension: file.extension,
+                path,
+                }),
+            };
+
+            const actionFunction =  actions[action.value as keyof typeof actions];
+
+            if (!actionFunction) return;
+
+            const res = await actionFunction();
+
+            if (res?.success) {
+                closeAllModals();
+
+                toast.success(
+                    <p className="body-2 flex items-center gap-2">
+                        <span><strong>{action.label}</strong> successful!</span>
+                    </p>
+                );
+            } else {
+                toast.error(
+                    <p className="body-2">
+                        {res?.message || (
+                        <span className="font-semibold">
+                            Failed to {action.value}
+                        </span>
+                        )}
+                    </p>
+                );
+            }
+        } catch (error) {
+            console.error(error);
+
+            toast.error(
+                <p className="body-2">Something went wrong</p>
+            );
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const renderDialogContent = () => {
         if (!action) return null;
@@ -68,18 +125,18 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                         <Button onClick={closeAllModals} className="modal-cancel-button">
                             Cancel
                         </Button>
-                        <Button onClick={handleAction} className="primary-btn modal-submit-button">
+                        <Button onClick={handleAction} disabled={isLoading || !name.trim()} className="primary-btn modal-submit-button">
                             <p className="capitalize">{value}</p>
+                            {isLoading && (
+                                <Image 
+                                    src="/assets/icons/loader.svg"
+                                    alt="loader"
+                                    width={24}
+                                    height={24}
+                                    className="animate-spin"
+                                />
+                            )}
                         </Button>
-                        {isLoading && (
-                            <Image 
-                                src="/assets/icons/loader.svg"
-                                alt="loader"
-                                width={24}
-                                height={24}
-                                className="animate-spin"
-                            />
-                        )}
                     </DialogFooter>
                 )}
             </DialogContent>
@@ -90,13 +147,15 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
   return (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-                <DropdownMenuTrigger className="shad-no-focus rounded-full p-1 transition hover:bg-black/5 dark:hover:bg-white/5" asChild>
-                    <Image 
+                <DropdownMenuTrigger asChild>
+                    <button className="shad-no-focus rounded-full p-1 transition hover:bg-black/5 dark:hover:bg-white/5">
+                        <Image
                         src="/assets/icons/dots.svg"
                         alt="dots"
                         width={34}
                         height={34}
-                    />
+                        />
+                    </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                     className="bg-[var(--card)]"
