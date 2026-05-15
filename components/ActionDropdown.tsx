@@ -23,10 +23,10 @@ import Link from "next/link"
 import { constructDownloadUrl } from "@/lib/utils"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { renameFile } from "@/lib/actions/file.actions"
+import { renameFile, updateFileUsers } from "@/lib/actions/file.actions"
 import { usePathname } from "next/navigation"
 import { toast } from "sonner"
-import { FileDetails } from "./ActionsModalContent"
+import { FileDetails, ShareInput } from "./ActionsModalContent"
 
 const ActionDropdown = ({file}: {file:FileDocument}) => {
 
@@ -35,6 +35,47 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
     const [action, setAction] = useState<ActionType | null>(null);
     const [name, setName] = useState(file.name);
     const [isLoading, setIsLoading] = useState(false);
+    const [emails, setEmails] = useState<string[]>([]);
+    const [emailInput, setEmailInput] = useState("");
+
+    const handleAddEmail = () => {
+        const trimmedEmail = emailInput.trim().toLowerCase();
+
+        if (!trimmedEmail) return;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(trimmedEmail)) {
+            toast.error(
+                <p className="body-2">
+                    Please enter a valid email
+                </p>
+            );
+            return;
+        }
+
+        const alreadyExists =
+            emails.includes(trimmedEmail) ||
+            file.users.includes(trimmedEmail);
+
+        if (alreadyExists) {
+            toast.error(
+                <p className="body-2">
+                    User already added
+                </p>
+            );
+            return;
+        }
+
+        setEmails((prev) => [...prev, trimmedEmail]);
+        setEmailInput("");
+    };
+
+    const handleRemovePendingEmail = (email: string) => {
+        setEmails((prev) =>
+            prev.filter((e) => e !== email)
+        );
+    };
 
     const path = usePathname();
 
@@ -56,13 +97,19 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
 
         try {
             const actions = {
-            rename: () =>
-                renameFile({
-                fileId: file.$id,
-                name,
-                extension: file.extension,
-                path,
-                }),
+                rename: () =>
+                    renameFile({
+                        fileId: file.$id,
+                        name,
+                        extension: file.extension,
+                        path,
+                    }),
+                share: () => 
+                    updateFileUsers({
+                        fileId: file.$id,
+                        emails,
+                        path,
+                    }),
             };
 
             const actionFunction =  actions[action.value as keyof typeof actions];
@@ -72,6 +119,8 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
             const res = await actionFunction();
 
             if (res?.success) {
+                setEmails([]);
+                setEmailInput("");
                 closeAllModals();
 
                 toast.success(
@@ -101,6 +150,42 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
         }
     };
 
+    const handleRemoveUser = async (email: string) => {
+        const updatedUsers = file.users.filter(
+            (userEmail: string) => userEmail !== email
+        );
+
+        try {
+            const res = await updateFileUsers({
+                fileId: file.$id,
+                emails: updatedUsers,
+                path,
+            });
+
+            if (res?.success) {
+            toast.success(
+                <p className="body-2">
+                {email} removed successfully
+                </p>
+            );
+            } else {
+            toast.error(
+                <p className="body-2">
+                    {res?.message || "Could not remove user"}
+                </p>
+            );
+            }
+        } catch (error) {
+            console.error("Remove user error:", error);
+
+            toast.error(
+                <p className="body-2">
+                    An unexpected error occurred
+                </p>
+            );
+        }
+    };
+
     const renderDialogContent = () => {
         if (!action) return null;
 
@@ -121,13 +206,32 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                     />
                 )}
                 {value === "details" && <FileDetails file={file} />}
+                {value === "share" && (
+                    <ShareInput 
+                        file={file}
+                        emailInput={emailInput}
+                        emails={emails}
+                        onInputChange={setEmailInput}
+                        onRemove={handleRemoveUser}
+                        handleAddEmail={handleAddEmail}
+                        handleRemovePendingEmail={handleRemovePendingEmail}
+                    />
+                )}
                 </DialogHeader>
                 {["rename", "delete", "share"].includes(value) && (
                     <DialogFooter className="flex flex-col gap-3 md:flex-row">
                         <Button onClick={closeAllModals} className="modal-cancel-button">
                             Cancel
                         </Button>
-                        <Button onClick={handleAction} disabled={isLoading || !name.trim()} className="primary-btn modal-submit-button">
+                        <Button 
+                            onClick={handleAction} 
+                            disabled={
+                                isLoading ||
+                                (value === "rename" && !name.trim()) ||
+                                (value === "share" && emails.length === 0)
+                            } 
+                            className="primary-btn modal-submit-button"
+                        >
                             <p className="capitalize">{value}</p>
                             {isLoading && (
                                 <Image 

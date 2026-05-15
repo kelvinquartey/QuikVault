@@ -699,6 +699,22 @@
     @apply !mb-1 flex items-center gap-3 rounded-xl border border-[var(--color-light-200)]/40 bg-[var(--color-light-400)]/50 p-3;
   }
 
+  .share-wrapper {
+    @apply !mt-2 space-y-2;
+  }
+
+  .share-input-field {
+    @apply h-[52px] w-full rounded-full border px-4 shadow-drop-1;
+  }
+
+  .share-remove-user {
+    @apply rounded-full bg-transparent text-[var(--color-light-200)] shadow-none hover:bg-transparent;
+  }
+
+  .remove-icon {
+    @apply aspect-square rounded-full;
+  }
+
 
 }
 

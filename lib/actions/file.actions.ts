@@ -7,6 +7,7 @@ import { ID, Models, Query } from "node-appwrite";
 import { constructFileUrl, getFileType, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "./user.actions";
+import { success } from "zod";
 
 
 const handleError = (error: unknown, message: string) => {
@@ -163,4 +164,65 @@ export const renameFile = async ({
             message: "Failed to rename file" 
         };
     }
+};
+
+export const updateFileUsers = async ({
+  fileId,
+  emails,
+  path,
+}: UpdateFileUsersProps) => {
+  const { databases } = await createAdminClient();
+
+  try {
+    const file = await databases.getDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.filesTableId,
+        fileId
+    );
+
+    const currentUsers = file.users || [];
+
+    const sanitizedEmails = [
+        ...new Set(
+            emails.map((email) => email.trim().toLowerCase())
+        ),
+    ];
+
+    const hasChanges =
+        sanitizedEmails.length !== currentUsers.length ||
+        sanitizedEmails.some(
+            (email: string) => !currentUsers.includes(email)
+        )
+    ;
+
+    if (!hasChanges) {
+      return {
+        success: false,
+        message: "No changes made",
+      };
+    }
+
+    const updatedFile = await databases.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.filesTableId,
+        fileId,
+        {
+        users: sanitizedEmails,
+        }
+    );
+
+    revalidatePath(path);
+
+    return parseStringify({
+        success: true,
+        ...updatedFile,
+    });
+  } catch (error) {
+    console.error("Update users error:", error);
+
+    return {
+      success: false,
+      message: "Failed to update users",
+    };
+  }
 };
