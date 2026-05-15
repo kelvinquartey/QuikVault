@@ -715,6 +715,14 @@
     @apply aspect-square rounded-full;
   }
 
+  .delete-confirmation {
+    @apply text-center text-[var(--color-light-100)];
+  }
+
+  .delete-file-name {
+    @apply font-medium text-[var(--color-primary)] ;
+  }
+
 
 }
 

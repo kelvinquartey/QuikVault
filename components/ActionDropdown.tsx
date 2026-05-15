@@ -23,7 +23,7 @@ import Link from "next/link"
 import { constructDownloadUrl } from "@/lib/utils"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { renameFile, updateFileUsers } from "@/lib/actions/file.actions"
+import { deleteFile, renameFile, updateFileUsers } from "@/lib/actions/file.actions"
 import { usePathname } from "next/navigation"
 import { toast } from "sonner"
 import { FileDetails, ShareInput } from "./ActionsModalContent"
@@ -107,9 +107,15 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                 share: () => 
                     updateFileUsers({
                         fileId: file.$id,
-                        emails,
+                        emails: [...file.users, ...emails],
                         path,
                     }),
+                delete: () => 
+                    deleteFile({
+                        fileId: file.$id,
+                        bucketFileId: file.bucketFileId,
+                        path,
+                    })
             };
 
             const actionFunction =  actions[action.value as keyof typeof actions];
@@ -125,7 +131,15 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
 
                 toast.success(
                     <p className="body-2 flex items-center gap-2">
-                        <span><strong>{action.label}</strong> successful!</span>
+                        {action.value === "delete" ? (
+                            <span>
+                                <strong>{file.name}</strong> successfully deleted
+                            </span>
+                        ) : (
+                            <span>
+                                <strong>{action.label}</strong> successful!
+                            </span>
+                        )}
                     </p>
                 );
             } else {
@@ -216,6 +230,12 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                         handleAddEmail={handleAddEmail}
                         handleRemovePendingEmail={handleRemovePendingEmail}
                     />
+                )}
+                {value === "delete" && (
+                    <p className="delete-confirmation">
+                        Are you sure you want to delete{` `}
+                        <span className="delete-file-name">{file.name}</span>?
+                    </p>
                 )}
                 </DialogHeader>
                 {["rename", "delete", "share"].includes(value) && (

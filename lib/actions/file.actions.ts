@@ -167,9 +167,9 @@ export const renameFile = async ({
 };
 
 export const updateFileUsers = async ({
-  fileId,
-  emails,
-  path,
+    fileId,
+    emails,
+    path,
 }: UpdateFileUsersProps) => {
   const { databases } = await createAdminClient();
 
@@ -225,4 +225,46 @@ export const updateFileUsers = async ({
       message: "Failed to update users",
     };
   }
+};
+
+export const deleteFile = async ({
+    fileId,
+    bucketFileId,
+    path,
+}: DeleteFileProps) => {
+    const { databases, storage } = await createAdminClient();
+
+    try {
+        await databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.filesTableId,
+            fileId
+        );
+
+        try {
+            await storage.deleteFile(
+                appwriteConfig.bucketId,
+                bucketFileId
+            );
+        } catch (storageError) {
+            console.error(
+                "Storage deletion failed (orphan file):",
+                storageError
+            );
+        }
+
+        revalidatePath(path);
+
+        return parseStringify({
+            success: true,
+            message: "File deleted successfully",
+        });
+    } catch (error) {
+        console.error("Main deletion error:", error);
+
+        return {
+            success: false,
+            message: "Failed to delete file",
+        };
+    }
 };
