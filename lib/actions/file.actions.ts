@@ -78,7 +78,14 @@ export const uploadFile = async ({
     }
 };
 
-const createQueries = (currentUser: UserDocument) => {
+const createQueries = (
+    currentUser: UserDocument,
+    types: string[],
+    searchText: string,
+    sort: string,
+    limit?: number,
+    fileId?: string,
+) => {
     const queries = [
         Query.or([
             Query.equal("owner", [currentUser.$id]),
@@ -93,12 +100,48 @@ const createQueries = (currentUser: UserDocument) => {
         ]),
     ];
 
-    //ADD: search, sort, limits later
+    if (types.length > 0) queries.push(Query.equal("type", types));
+
+    if (fileId) {
+        queries.push(Query.equal("$id", fileId));
+    } else if (searchText) {
+        queries.push(Query.contains("name", searchText));
+    }
+
+    if (limit) queries.push(Query.limit(limit));
+
+
+    if (sort) {
+        const lastHyphenIndex = sort.lastIndexOf("-");
+
+        const sortBy = sort.slice(0, lastHyphenIndex);
+        const orderBy = sort.slice(lastHyphenIndex + 1);
+
+        const allowedSortFields = ["name", "size", "$createdAt"];
+        const allowedOrders = ["asc", "desc"];
+
+        if (
+            allowedSortFields.includes(sortBy) &&
+            allowedOrders.includes(orderBy)
+        ) {
+            queries.push(
+                orderBy === "asc"
+                    ? Query.orderAsc(sortBy)
+                    : Query.orderDesc(sortBy),
+            );
+        }
+    }
 
     return queries;
 }
 
-export const getFiles = async () => {
+export const getFiles = async ({ 
+    types = [],
+    searchText = "",
+    sort = "$createdAt-desc",
+    limit,
+    fileId,
+}: GetFilesProps) => {
     const { databases } = await createAdminClient();
 
     try {
@@ -106,7 +149,7 @@ export const getFiles = async () => {
 
         if (!currentUser) throw new Error("User not found");
 
-        const queries = createQueries(currentUser);
+        const queries = createQueries(currentUser, types, searchText, sort, limit, fileId,);
 
         const files = await databases.listDocuments(
             appwriteConfig.databaseId,

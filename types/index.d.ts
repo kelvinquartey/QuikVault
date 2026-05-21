@@ -45,6 +45,7 @@ declare global{
     searchText?: string;
     sort?: string;
     limit?: number;
+    fileId?: string,
   }
   declare interface RenameFileProps {
     fileId: string;

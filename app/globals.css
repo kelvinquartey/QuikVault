@@ -722,6 +722,51 @@
   .delete-file-name {
     @apply font-medium text-[var(--color-primary)] ;
   }
+  
+
+  /* Search */
+  .search {
+    @apply relative w-full md:max-w-[480px];
+  }
+
+  .search-input-wrapper {
+    @apply flex h-[52px] flex-1 items-center gap-3 rounded-full
+    border border-black/10 dark:border-white/10
+    bg-white dark:bg-[var(--card)]
+    px-4
+    shadow-sm dark:shadow-none
+    transition-colors duration-200;
+  }
+
+  .search-input {
+    @apply text-[1rem] leading-6 font-normal
+    w-full border-none bg-transparent p-0 shadow-none
+    text-[var(--foreground)]
+    placeholder:text-[var(--color-light-200)];
+  }
+
+  .search-result {
+    @apply absolute left-0 top-16 z-50
+    flex w-full flex-col gap-3
+    rounded-[20px]
+    border border-black/10 dark:border-white/10
+    bg-white dark:bg-[var(--card)]
+    p-4
+    shadow-xl dark:shadow-2xl
+    backdrop-blur-sm;
+  }
+
+  .search-result li {
+    @apply rounded-xl px-2 py-2
+    transition-colors duration-200
+    hover:bg-black/5 dark:hover:bg-white/5
+    cursor-pointer;
+  }
+
+  .empty-result {
+    @apply text-[1rem] leading-6 font-normal text-center
+    text-[var(--color-light-200)];
+  }
 
 
 }
