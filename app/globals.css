@@ -767,6 +767,33 @@
     @apply text-[1rem] leading-6 font-normal text-center
     text-[var(--color-light-200)];
   }
+  
+
+/* Sort */
+  .sort-select {
+    @apply h-11 w-full rounded-[10px]
+    border border-black/10 dark:border-white/10
+    bg-white dark:bg-[var(--card)]
+    text-[var(--foreground)]
+    shadow-sm transition-colors
+    cursor-pointer
+    sm:w-[210px];
+  }
+
+  .sort-select-content {
+    @apply border border-black/10 dark:border-white/10
+    bg-white dark:bg-[var(--card)]
+    text-[var(--foreground)]
+    shadow-xl backdrop-blur-md;
+  }
+
+  .shad-select-item {
+    @apply cursor-pointer rounded-md
+    text-[var(--foreground)]
+    transition-colors
+    hover:bg-black/5 dark:hover:bg-white/5
+    focus:bg-black/5 dark:focus:bg-white/5;
+  }
 
 
 }
