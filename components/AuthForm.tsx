@@ -17,7 +17,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createAccount, signInUser } from "@/lib/actions/user.actions";
 import OtpModal from "./OTPModal";
 
@@ -34,6 +34,12 @@ const authFormSchema = (formType: FormType) => {
           .min(3, "Full name should be at least 3 characters")
           .max(50, "Full name should be at most 50 characters")
         : z.string().optional(),
+    terms:
+      formType === "sign-up"
+        ? z.literal(true, {
+              message: "You must accept the Terms & Conditions",
+          })
+        : z.boolean().optional(),
   })
 }
 
@@ -45,12 +51,18 @@ export const AuthForm = ({type}: {type: FormType}) => {
 
   const [showOtpModal, setShowOtpModal] = useState(false);
 
+  useEffect(() => {
+    setShowOtpModal(false);
+    setAccountId(null);
+  }, [type]);
+
   const formSchema = authFormSchema(type)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: "",
       email: "",
+      terms: false,
     }
   })
 
@@ -145,10 +157,63 @@ export const AuthForm = ({type}: {type: FormType}) => {
             )}
           />
 
+          {type === "sign-up" && (
+            <FormField
+              control={form.control}
+              name="terms"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <div className="flex items-start gap-3 rounded-2xl border border-black/5 bg-black/[0.02] p-4 dark:border-white/10 dark:bg-white/[0.03]">
+                    
+                    <FormControl>
+                      <input
+                        id="terms"
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        className="
+                          mt-1 size-4 rounded border border-[var(--color-light-200)]
+                          accent-[var(--color-primary)]
+                          cursor-pointer
+                        "
+                      />
+                    </FormControl>
+
+                    <div className="space-y-1">
+                      <p className="text-sm leading-6 text-[var(--foreground)]">
+                        I agree to the{" "}
+                        <Link
+                          href="/terms"
+                          target="_blank"
+                          className="
+                            font-medium text-[var(--color-primary)]
+                            hover:text-[var(--color-primary-hover)]
+                            hover:underline
+                          "
+                        >
+                          Terms & Conditions
+                        </Link>
+                      </p>
+
+                      <p className="text-xs text-[var(--color-light-100)] dark:text-[var(--color-light-200)]">
+                        This project is for portfolio and educational purposes only.
+                      </p>
+                    </div>
+                  </div>
+
+                  <FormMessage className="shad-form-message" />
+                </FormItem>
+              )}
+            />
+          )}
+
           <Button
             type="submit"
             className="shad-form-button-submit flex items-center justify-center gap-2 cursor-pointer"
-            disabled={isLoading}
+            disabled={
+              isLoading ||
+              (type === "sign-up" && !form.watch("terms"))
+            }
           >
            {type === "sign-in" ? "Sign In" : "Sign Up"}
            {isLoading && (
