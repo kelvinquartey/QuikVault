@@ -55,14 +55,14 @@ const OtpModal = ({
         return () => clearTimeout(timer);
     }, [countdown, open]);
 
-    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        if (otp.length !== 6) return;
+    const verifyOtp = async (code: string) => {
+        if (code.length !== 6 || isLoading) return;
+
         setIsLoading(true);
         setErrorMessage("");
 
-        try{
-            const response = await verifySecret({ accountId, otp });
+        try {
+            const response = await verifySecret({ accountId, otp: code });
 
             if (response.success) {
                 router.push("/");
@@ -77,8 +77,18 @@ const OtpModal = ({
         } finally {
             setIsLoading(false);
         }
+    };
 
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        await verifyOtp(otp);
     }
+
+    useEffect(() => {
+        if (otp.length === 6 && !isLoading) {
+            verifyOtp(otp);
+        }
+    }, [otp]);
 
     const handleResendOtp = async () => {
         if (countdown > 0) return;
@@ -185,6 +195,7 @@ const OtpModal = ({
                                 <Button 
                                     type="button" 
                                     variant="link" 
+                                    disabled={isLoading}
                                     className="pl-1 text-[var(--color-primary)] cursor-pointer"
                                     onClick={handleResendOtp}>
                                         {isResending ? "Sending..." : "Resend OTP"}
