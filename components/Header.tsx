@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import UserDropdown from './UserDropdown'
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -55,26 +56,34 @@ function SubmitButton() {
 }
 
 const Header = ({
-  userId, accountId
+  userId, 
+  accountId,
+  fullName,
+  email,
+  avatar
 }: {
-  userId: string, 
-  accountId: string
+  userId: string;
+  accountId: string;
+  fullName: string;
+  email: string;
+  avatar?: string;
 }) => {
-    const { pending } = useFormStatus();
 
   return (
     <header className="header">
         <Search />
 
-        <div className="header-wrapper flex-center">
+        <div className="header-wrapper flex-center gap-3">
             <FileUploader 
               ownerId={userId}
               accountId={accountId}
             />
 
-            <form action={signOutUser}>
-                <SubmitButton/>
-            </form>
+            <UserDropdown
+              fullName={fullName}
+              email={email}
+              avatar={avatar}
+            />
         </div>
     </header>
   )

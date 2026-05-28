@@ -23,6 +23,9 @@ export default async function Layout({
             <Header 
                 userId={user.$id}   
                 accountId={user.accountId}
+                fullName={user.fullName}
+                email={user.email}
+                avatar={user.avatar}
             />
 
             <div className="main-content remove-scrollbar">{children}</div>
