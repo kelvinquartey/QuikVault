@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { signOutUser } from "@/lib/actions/user.actions";
+import { getAvatarUrl } from "@/lib/getAvatar";
 
 interface UserDropdownProps {
     fullName: string;
@@ -24,6 +25,18 @@ const UserDropdown = ({
     email = "",
     avatar = "",
 }: UserDropdownProps) => {
+
+    const safeAvatarValue =
+        typeof avatar === "string" &&
+        (avatar.startsWith("http://") || avatar.startsWith("https://"))
+            ? avatar
+            : "";
+
+    const safeAvatar = getAvatarUrl({
+        avatar: safeAvatarValue,
+        fullName,
+        email,
+    });
     
     return (
         <DropdownMenu>
@@ -40,7 +53,7 @@ const UserDropdown = ({
                     "
                 >
                 <Image
-                    src={avatar || "/assets/images/avatar.png"}
+                    src={safeAvatar}
                     alt={fullName}
                     width={100}
                     height={100}

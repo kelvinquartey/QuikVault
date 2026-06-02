@@ -935,5 +935,87 @@
     text-left;
   }
 
+  .account-content {
+    @apply rounded-[32px]
+    border border-black/5
+    bg-white p-6 shadow-xl
+    dark:border-white/10
+    dark:bg-[var(--card)]
+  }
+
+  .avatar-info {
+    @apply flex flex-col gap-6
+    sm:flex-row sm:items-center sm:justify-between
+  }
+
+  .account-signout {
+    @apply flex h-12 items-center justify-center gap-3
+    rounded-2xl bg-red-500 px-6
+    text-sm font-medium text-white
+    transition hover:bg-red-600
+    cursor-pointer
+  }
+
+  .account-information{
+    @apply rounded-3xl border border-black/5
+    bg-black/[0.02] p-6
+    dark:border-white/10
+    dark:bg-white/[0.03]
+    mt-10   
+  }
+
+  .account-information-input {
+    @apply h-12 w-full rounded-xl border
+    px-4 text-sm text-[var(--foreground)]
+    outline-none transition
+    dark:bg-[var(--card)]                  
+  }
+
+  .full-name {
+    @apply rounded-xl border border-black/5
+    bg-black/[0.02] p-5
+    dark:border-white/10
+    dark:bg-white/[0.03]
+  }
+
+  .account-information-edit{
+    @apply flex h-10 items-center justify-center
+    rounded-2xl border border-black/10
+    px-5 text-sm font-medium
+    transition hover:bg-black/[0.03]
+    dark:border-white/10
+    dark:hover:bg-white/[0.05]
+    cursor-pointer
+  }
+
+  .account-information-save {
+    @apply flex h-10 items-center justify-center
+    rounded-2xl bg-[var(--color-primary)]
+    px-5 text-sm font-medium text-white
+    opacity-60 cursor-pointer hover:opacity-100
+  }
+
+  .email {
+    @apply rounded-xl border border-black/5
+    bg-black/[0.02] p-5
+    dark:border-white/10
+    dark:bg-white/[0.03]
+  }
+
+  .delete-account {
+    @apply flex h-12 items-center justify-center
+    rounded-2xl bg-red-500 px-6
+    text-sm font-medium text-white
+    opacity-60 cursor-pointer
+    hover:opacity-100
+  }
+
+  .delete-account-submit-button {
+    @apply h-11 w-full flex-1
+    bg-red-500 text-base text-white
+    hover:bg-red-600
+    cursor-pointer
+  }
+
 
 }

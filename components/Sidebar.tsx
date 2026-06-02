@@ -6,12 +6,24 @@ import { navItems } from "@/constants"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { getAvatarUrl } from "@/lib/getAvatar"
 
 
 const Sidebar = ({ user }: { user: any }) => {
     const fullName = user?.fullName || "";
     const email = user?.email || "";
-    const avatar = user?.avatar || "/assets/images/avatar.png";
+
+    const safeAvatarValue =
+        typeof user?.avatar === "string" &&
+        (user.avatar.startsWith("http://") || user.avatar.startsWith("https://"))
+        ? user.avatar
+        : "";
+
+    const avatar = getAvatarUrl({
+        avatar: safeAvatarValue,
+        fullName,
+        email,
+    })
 
     const pathname = usePathname();
 

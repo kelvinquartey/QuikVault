@@ -5,6 +5,7 @@ import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const getUserByEmail = async (email: string) => {
     const { databases } = await createAdminClient();
@@ -67,6 +68,7 @@ export const createAccount = async ({
           fullName: fullName || "",
           email,
           avatar,
+          avatarFileId: "",
           accountId,
         }
       );
@@ -195,6 +197,292 @@ export const signInUser = async ({ email }: { email: string }) => {
     return {
       success: false,
       message: error.message || "Failed to sign in. Please try again.",
+    };
+  }
+};
+
+export const deleteUserAccount = async () => {
+  try {
+    const sessionCookie = (await cookies()).get("appwrite-session");
+
+    if (!sessionCookie?.value) {
+      throw new Error("No active session found");
+    }
+
+    const { account } = await createSessionClient();
+
+    const { databases, storage, users } = await createAdminClient();
+
+    const currentUser = await account.get();
+
+    const existingUser = await getUserByEmail(currentUser.email);
+
+    const files = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesTableId,
+      [Query.equal("owner", currentUser.$id)]
+    );
+
+    await Promise.all(
+      files.documents.map(async (file: any) => {
+        try {
+          if (file.bucketFileId) {
+            await storage.deleteFile(
+              appwriteConfig.bucketId,
+              file.bucketFileId
+            );
+          }
+
+          await databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.filesTableId,
+            file.$id,
+          );
+        } catch (error) {
+          console.error("Failed to delete file:", file.$id, error);
+        }
+      })
+    );
+
+    if (existingUser) {
+      await databases.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userTableId,
+        existingUser.$id
+      );
+    }
+
+
+    (await cookies()).delete("appwrite-session");
+
+  } catch (error) {
+    console.error("Delete account error:", error);
+    throw error;
+  }
+
+  redirect("/sign-in");
+};
+
+import { AppwriteException } from "appwrite";
+import { getAvatarUrl } from "../getAvatar";
+
+export const updateUserFullName = async (fullName: string) => {
+  try {
+    const { account, databases } = await createSessionClient();
+
+    const sanitizedName = fullName.trim();
+
+    if (!sanitizedName) {
+      throw new Error("Full name is required");
+    }
+
+    if (sanitizedName.length < 3) {
+      throw new Error("Full name must be at least 3 characters");
+    }
+
+    const currentUser = await account.get();
+
+    if (currentUser.name === sanitizedName) {
+      throw new Error("The new name is the same as your current name.");
+    }
+
+    await account.updateName(sanitizedName);
+
+    const existingUser = await getUserByEmail(currentUser.email);
+
+    if (!existingUser) {
+      throw new Error("User document not found");
+    }
+
+    const updatedUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userTableId,
+      existingUser.$id,
+      {
+        fullName: sanitizedName,
+      }
+    );
+
+    return parseStringify({
+      success: true,
+      data: updatedUser,
+    });
+
+  } catch (error: unknown) {
+
+    if (error instanceof AppwriteException) {
+      console.error(
+        "Appwrite specific error:",
+        error.message,
+        error.code
+      );
+
+      return {
+        success: false,
+        message: `Appwrite Error (${error.code}): ${error.message}`,
+      };
+    }
+
+    if (error instanceof Error) {
+      console.error("Update full name error:", error.message);
+
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
+    };
+  }
+};
+
+export const updateUserAvatar = async (file: File) => {
+  try {
+    const { account, databases, storage } = await createSessionClient();
+
+    const currentUser = await account.get();
+
+    const existingUser = await getUserByEmail(currentUser.email);
+
+    if (!existingUser) {
+      throw new Error("User document not found");
+    }
+
+    if (!file.type.startsWith("image/")) {
+      throw new Error("Please upload a valid image");
+    }
+
+    const uploadedFile = await storage.createFile(
+      appwriteConfig.bucketId,
+      ID.unique(),
+      file
+    );
+
+    const avatarUrl = `${appwriteConfig.endpointUrl}/storage/buckets/${appwriteConfig.bucketId}/files/${uploadedFile.$id}/view?project=${appwriteConfig.projectId}`;
+
+    if (existingUser.avatarFileId) {
+      try {
+        await storage.deleteFile(
+          appwriteConfig.bucketId,
+          existingUser.avatarFileId
+        );
+      } catch (error) {
+        console.warn("Old avatar could not be deleted");
+      }
+    }
+
+    const updatedUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userTableId,
+      existingUser.$id,
+      {
+        avatar: avatarUrl,
+        avatarFileId: uploadedFile.$id,
+      }
+    );
+
+    revalidatePath("/", "layout");
+
+    return parseStringify({
+      success: true,
+      data: updatedUser,
+      avatar: avatarUrl,
+    });
+
+  } catch (error: unknown) {
+    if (error instanceof AppwriteException) {
+      console.error("Appwrite specific error:", error.message, error.code);
+      return { success: false, message: `Appwrite Error (${error.code}): ${error.message}` };
+    }
+
+    if (error instanceof Error) {
+      console.error("Avatar upload error:", error.message);
+      return { success: false, message: error.message };
+    }
+
+    return { success: false, message: "An unexpected error occurred" };
+  }
+};
+
+export const deleteUserAvatar = async () => {
+  try {
+    const { account, databases, storage } = await createSessionClient();
+
+    const currentUser = await account.get();
+
+    const existingUser = await getUserByEmail(currentUser.email);
+
+    if (!existingUser) {
+      throw new Error("User document not found");
+    }
+
+    // Delete uploaded avatar from storage if it exists
+    if (existingUser.avatarFileId) {
+      try {
+        await storage.deleteFile(
+          appwriteConfig.bucketId,
+          existingUser.avatarFileId
+        );
+      } catch (error) {
+        console.warn(
+          "Avatar file could not be deleted or no longer exists."
+        );
+      }
+    }
+
+    // Clear avatar fields in database
+    const updatedUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userTableId,
+      existingUser.$id,
+      {
+        avatar: "",
+        avatarFileId: "",
+      }
+    );
+
+    const fallbackAvatar = getAvatarUrl({
+      avatar: "",
+      fullName: existingUser.fullName,
+      email: existingUser.email,
+    });
+
+    revalidatePath("/", "layout");
+
+    return parseStringify({
+      success: true,
+      data: updatedUser,
+      avatar: fallbackAvatar,
+    });
+  } catch (error: unknown) {
+    if (error instanceof AppwriteException) {
+      console.error(
+        "Appwrite specific error:",
+        error.message,
+        error.code
+      );
+
+      return {
+        success: false,
+        message: `Appwrite Error (${error.code}): ${error.message}`,
+      };
+    }
+
+    if (error instanceof Error) {
+      console.error("Delete avatar error:", error.message);
+
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: false,
+      message: "An unexpected error occurred",
     };
   }
 };
