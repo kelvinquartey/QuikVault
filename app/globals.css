@@ -205,6 +205,9 @@
   --shadow-drop-2: 0 8px 30px 0 rgba(65, 89, 214, 0.3);
   --shadow-drop-3: 0 8px 30px 0 rgba(65, 89, 214, 0.1);
 
+  /* Animation */
+  --animate-pulse-scale: pulse-scale 1.6s ease-in-out infinite;
+
   /* Keyframes */
   @keyframes fade-in {
     0% { opacity: 0; transform: translateY(6px); }
@@ -219,6 +222,40 @@
   @keyframes scale-in {
     0% { transform: scale(0.96); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Keyframes */
+  @keyframes fade-in {
+    0% { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-in {
+    0% { opacity: 0; transform: translateX(10px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes scale-in {
+    0% { transform: scale(0.96); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  
+  @keyframes pulse-scale {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+
+    50% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
   }
 }
 
@@ -1015,6 +1052,18 @@
     bg-red-500 text-base text-white
     hover:bg-red-600
     cursor-pointer
+  }
+
+  /* Loading page */
+  .logo-loading {
+    @apply animate-pulse-scale
+    flex items-center justify-center
+    rounded-full
+    border border-black/50 dark:border-white/10
+    bg-[var(--card)]
+    w-48 h-48
+    p-8
+    shadow-xl
   }
 
 
