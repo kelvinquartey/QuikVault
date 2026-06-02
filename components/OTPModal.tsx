@@ -175,7 +175,7 @@ const OtpModal = ({
                                 className="shad-submit-btn h-12" 
                                 disabled={otp.length !== 6 || isLoading}
                             >
-                                Submit
+                                {isLoading ? "Verifying" : "Submit"}
                                 {isLoading && <Image 
                                     src="/assets/icons/loader.svg" 
                                     alt="loading"

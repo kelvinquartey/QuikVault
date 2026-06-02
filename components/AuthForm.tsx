@@ -215,7 +215,14 @@ export const AuthForm = ({type}: {type: FormType}) => {
               (type === "sign-up" && !form.watch("terms"))
             }
           >
-           {type === "sign-in" ? "Sign In" : "Sign Up"}
+           {isLoading
+              ? type === "sign-in"
+                ? "Signing In..."
+                : "Signing Up..."
+              : type === "sign-in"
+                ? "Sign In"
+                : "Sign Up"
+            }
            {isLoading && (
             <Image 
               src="/assets/icons/loader.svg" 
