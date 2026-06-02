@@ -6,14 +6,10 @@ const TermsPage = () => {
         <div className="mx-auto max-w-4xl">
             <div className="mb-12 text-center">
                 <div className="mb-4 inline-flex items-center rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 px-4 py-2">
-                    <span className="text-sm font-medium text-[var(--color-primary)]">
+                    <span className="h1 font-medium text-[var(--color-primary)] dark:text-white/90">
                         Terms & Conditions
                     </span>
                 </div>
-
-                <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl">
-                    Terms & Conditions
-                </h1>
 
                 <p className="mx-auto max-w-2xl text-base text-[var(--color-light-100)] dark:text-[var(--color-light-200)] sm:text-lg">
                     Please read these terms carefully before using this platform.
