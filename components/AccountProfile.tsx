@@ -181,7 +181,8 @@ const AccountProfile = ({
                                         width={120}
                                         height={120}
                                         className="
-                                            size-24 rounded-full object-cover
+                                            size-18 sm:size-20 md:size-24
+                                            rounded-full object-cover
                                             border-4 border-white shadow-xl
                                             dark:border-[var(--card)]
                                             transition hover:scale-105
@@ -215,7 +216,8 @@ const AccountProfile = ({
                                     disabled={isUploadingAvatar}
                                     className="
                                         absolute bottom-0 right-0
-                                        flex size-9 items-center justify-center
+                                        size-8 sm:size-9
+                                        flex items-center justify-center
                                         rounded-full border-4 border-white
                                         bg-[var(--color-primary)]
                                         shadow-lg transition
@@ -239,16 +241,16 @@ const AccountProfile = ({
                                             <Image
                                                 src="/assets/icons/camera.svg"
                                                 alt="Avatar actions"
-                                                width={18}
-                                                height={18}
+                                                width={16}
+                                                height={16}
                                                 className="invert block dark:hidden"
                                             />
 
                                             <Image
                                                 src="/assets/icons/camera-dark.svg"
                                                 alt="Avatar actions"
-                                                width={18}
-                                                height={18}
+                                                width={16}
+                                                height={16}
                                                 className="invert hidden dark:block"
                                             />
                                         </>
@@ -300,11 +302,18 @@ const AccountProfile = ({
                     </div>
 
                     <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">
                         {name}
                     </h1>
 
-                    <p className="mt-2 text-base text-[var(--color-light-100)] dark:text-[var(--color-light-200)]">
+                    <p 
+                        className="
+                            mt-1 sm:mt-2
+                            text-sm sm:text-base
+                            text-[var(--color-light-100)]
+                            dark:text-[var(--color-light-200)]
+                        "
+                    >
                         {email}
                     </p>
                     </div>
