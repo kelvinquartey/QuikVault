@@ -49,7 +49,7 @@
 
   /* Logo */
   --logo-main: var(--color-dark-100);
-  --logo-accent: #ffffff;
+  --logo-accent: #f67d1b;
 
   /* shadcn mapping */
   --primary: var(--color-primary);
