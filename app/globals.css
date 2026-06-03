@@ -847,7 +847,7 @@
   }
 
   .dashboard-summary-list {
-    @apply mt-6 grid grid-cols-1 gap-4 xl:mt-10 xl:grid-cols-2 xl:gap-9;
+    @apply mt-6 grid grid-cols-2 gap-4 xl:mt-10 xl:gap-9;
   }
 
   .dashboard-summary-card {
