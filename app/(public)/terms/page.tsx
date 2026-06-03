@@ -153,13 +153,6 @@ const TermsPage = () => {
                     <p className="text-[var(--color-light-100)] dark:text-[var(--color-light-200)]">
                         Last updated: May 2026
                     </p>
-
-                    <Link
-                    href="/sign-in"
-                    className="font-medium text-[var(--color-primary)] transition hover:opacity-80"
-                    >
-                        Back to Sign In
-                    </Link>
                 </div>
             </div>
         </div>
