@@ -19,6 +19,7 @@ import FileUploader from "./FileUploader"
 import { Button } from "./ui/button"
 import { signOutUser } from "@/lib/actions/user.actions"
 import UserDropdown from "./UserDropdown"
+import { getAvatarUrl } from "@/lib/getAvatar"
 
 interface Props {
   $id: string,
@@ -47,6 +48,17 @@ const MobileNavigation = ({
     await signOutUser();
   };
 
+    const safeAvatarValue =
+      typeof avatar === "string" &&
+      (avatar.startsWith("http://") || avatar.startsWith("https://"))
+        ? avatar
+        : "";
+
+    const avatarUrl = getAvatarUrl({
+      avatar: safeAvatarValue,
+      fullName,
+      email,
+    });
 
   return (
     <header className="mobile-header">
@@ -71,7 +83,7 @@ const MobileNavigation = ({
             <SheetTitle>
               <div className="header-user">
                 <Image 
-                  src={avatar} 
+                  src={avatarUrl} 
                   alt="avatar" 
                   width={44} 
                   height={44} 
