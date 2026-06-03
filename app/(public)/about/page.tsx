@@ -1,7 +1,7 @@
 export default function AboutPage() {
     return (
         <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-            <div className="mx-auto max-w-5xl px-6 py-16">
+            <div className="mx-auto max-w-5xl px-6 py-10">
 
                 <section className="text-center">
                     <div className="inline-flex items-center rounded-full bg-[var(--color-primary)]/10 px-4 py-2 h2 font-medium text-[var(--color-primary)]">

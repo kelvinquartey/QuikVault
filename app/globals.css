@@ -1066,5 +1066,21 @@
     shadow-xl
   }
 
+  /* Public Pages */
+  .public-link {
+    @apply inline-flex items-center
+    rounded-full border-1
+    px-4 py-2
+    text-sm font-medium
+    text-[var(--color-light-100)]
+    transition-all duration-200
+    hover:bg-[var(--color-primary)]/10
+    hover:text-[var(--color-primary)]
+    dark:text-[var(--color-light-200)]
+    dark:hover:bg-white/5
+    focus:outline-none focus:ring-2
+    focus:ring-[var(--color-primary)]/30
+  }
+
 
 }
