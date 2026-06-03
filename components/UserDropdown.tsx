@@ -58,7 +58,8 @@ const UserDropdown = ({
                     width={100}
                     height={100}
                     className="
-                    size-13 rounded-full object-cover
+                    size-10 sm:size-12 lg:size-13 
+                    rounded-full object-cover
                     border border-black/70
                     dark:border-white/70
                     "
