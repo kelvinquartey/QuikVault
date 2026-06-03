@@ -36,7 +36,7 @@ const AccountPage = async () => {
   })
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-6 py-10">
+    <div className="mx-auto w-full max-w-4xl px-0 sm:px-6 py-0 sm:py-10">
       <div className="account-content">
         <AccountProfile 
           fullName={fullName}
