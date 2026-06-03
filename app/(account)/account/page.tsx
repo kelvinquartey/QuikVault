@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import AccountProfile from "@/components/AccountProfile";
 import { getAvatarUrl } from "@/lib/getAvatar";
+import AccountHeader from "@/components/AccountHeader";
 
 const AccountPage = async () => {
   const user = await getCurrentUser();
@@ -36,6 +37,8 @@ const AccountPage = async () => {
   })
 
   return (
+    <>
+    <AccountHeader />
     <div className="mx-auto w-full max-w-4xl px-0 sm:px-6 py-0 sm:py-10">
       <div className="account-content">
         <AccountProfile 
@@ -127,6 +130,7 @@ const AccountPage = async () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
