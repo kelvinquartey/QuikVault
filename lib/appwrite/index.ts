@@ -9,13 +9,15 @@ export const createSessionClient = async () => {
         .setEndpoint(appwriteConfig.endpointUrl)
         .setProject(appwriteConfig.projectId);
 
-    const session = (await cookies()).get("appwrite-session");
+    const sessionCookie = (await cookies()).get("appwrite-session");
 
-    if (!session || !session.value) {
-        throw new Error("No session");
+    const hasSession = !!sessionCookie?.value;
+
+    if (hasSession) {
+        client.setSession(
+            sessionCookie.value
+        );
     }
-
-    client.setSession(session.value);
 
     return {
         get account() { 
@@ -27,6 +29,7 @@ export const createSessionClient = async () => {
         get storage() {
             return new Storage(client);
         },
+        hasSession,
     };
 }
 
