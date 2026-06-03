@@ -1061,9 +1061,18 @@
     rounded-full
     border border-black/50 dark:border-white/10
     bg-[var(--card)]
-    w-48 h-48
-    p-8
+    w-32 h-32
+    sm:w-40 sm:h-40
+    md:w-48 md:h-48
+    p-5 sm:p-6 md:p-8
     shadow-xl
+  }
+
+  .loading-width {
+    @apply select-none
+      w-[90px] h-[90px]
+      sm:w-[120px] sm:h-[120px]
+      md:w-[180px] md:h-[180px]
   }
 
   /* Public Pages */
