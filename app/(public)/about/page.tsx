@@ -113,14 +113,6 @@ export default function AboutPage() {
                         ))}
                     </div>
                 </section>
-
-                <section className="mt-20 border-t border-black/10 pt-10 text-center dark:border-white/10">
-                    <h3 className="h4">QuikVault</h3>
-
-                    <p className="mt-3 text-[var(--color-light-100)] dark:text-[var(--color-light-200)]">
-                        Store smarter. Access faster. Stay organized.
-                    </p>
-                </section>
             </div>
         </main>
     );

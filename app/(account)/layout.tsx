@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
@@ -14,6 +15,7 @@ export default async function AccountLayout({
   return (
     <main className="min-h-screen bg-[var(--background)]">
       {children}
+      <Footer/>
       <Toaster />
     </main>
   );

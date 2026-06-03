@@ -1,4 +1,6 @@
+import Footer from "@/components/Footer"
 import { Logo } from "@/components/logo"
+import Link from "next/link";
 
 export default function AuthLayout({
     children,
@@ -67,6 +69,40 @@ export default function AuthLayout({
                                 </div>
                             </div>
                         ))}
+                    </div>
+                    <div className="-mt-16">
+                        <footer
+                            className="
+                                mt-16 border-t border-black/10 px-6 
+                                dark:border-white/10 bg-transparent
+                            "
+                        >
+                            <div
+                                className="footer-content"
+                            >
+                                <div className="text-center sm:text-left">
+                                    <p className="text-sm font-medium text-[var(--foreground)]">
+                                        &copy; 2026 QuikVault
+                                    </p>
+                                </div>
+
+                                <nav className="flex items-center gap-3">
+                                    <Link
+                                        href="/about"
+                                        className="auth-footer-link"
+                                    >
+                                        About
+                                    </Link>
+
+                                    <Link
+                                        href="/terms"
+                                        className="auth-footer-link"
+                                    >
+                                        Terms
+                                    </Link>
+                                </nav>
+                            </div>
+                        </footer>
                     </div>
                 </div>
             </section>

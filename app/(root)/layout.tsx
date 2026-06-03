@@ -4,6 +4,7 @@ import Sidebar from '@/components/Sidebar'
 import { getCurrentUser } from '@/lib/actions/user.actions'
 import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner"
+import Footer from '@/components/Footer';
 
 export default async function Layout({
     children,
@@ -29,6 +30,7 @@ export default async function Layout({
             />
 
             <div className="main-content remove-scrollbar">{children}</div>
+            <Footer/>
         </section>
 
         <Toaster />
