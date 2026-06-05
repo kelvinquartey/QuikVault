@@ -14,13 +14,6 @@ import Image from "next/image"
 import { navItems } from "@/constants"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import FileUploader from "./FileUploader"
-import { Button } from "./ui/button"
-import { signOutUser } from "@/lib/actions/user.actions"
-import UserDropdown from "./UserDropdown"
-import { getAvatarUrl } from "@/lib/getAvatar"
-import { SidebarLogo } from "./SidebarLogo"
-import { Logo } from "./logo"
 
 interface Props {
   $id: string,

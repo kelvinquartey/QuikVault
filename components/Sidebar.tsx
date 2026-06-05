@@ -55,14 +55,6 @@ const Sidebar = ({ user }: { user: any }) => {
                 </ul>
             </nav>
 
-            <Image 
-                src="/assets/images/files.png" 
-                alt="files"
-                width={506} 
-                height={418}
-                className="w-full"
-            />
-
             <div className="sidebar-user-info">
                 <Image 
                     src={avatar}  
