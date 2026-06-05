@@ -62,7 +62,9 @@ const MobileNavigation = ({
 
   return (
     <header className="mobile-header">
-      <MobileLogo />
+      <Link href="/">
+        <MobileLogo />
+      </Link>
       <section className="flex gap-7">
         <UserDropdown 
           fullName={fullName}
@@ -99,7 +101,7 @@ const MobileNavigation = ({
             <nav className="mobile-nav h5">
               <ul className="mobile-nav-list">
                 {navItems.map(({url, name, icon}) => (
-                  <Link href={url} key={name} className="lg:w-full">
+                  <Link href={url} key={name} className="lg:w-full" onClick={() => setOpen(false)}>
                     <li 
                       className={cn(
                         "h5 mobile-nav-item", 
