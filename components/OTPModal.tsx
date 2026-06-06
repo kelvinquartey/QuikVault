@@ -111,12 +111,12 @@ const OtpModal = ({
 
     return (
         <div>
-            <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialog open={open} onOpenChange={setOpen}> 
                 <AlertDialogContent className="shad-alert-dialog">
                     <button
                         onClick={() => setOpen(false)}
                         aria-label="Close dialog"
-                        className="absolute right-4 top-4 opacity-60 hover:opacity-100 transition cursor-pointer"
+                        className="absolute right-3 top-3 opacity-60 hover:opacity-100 transition cursor-pointer"
                     >
                         <Image 
                             src="/assets/icons/close-dark.svg" 

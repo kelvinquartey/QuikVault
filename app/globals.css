@@ -357,7 +357,7 @@
   }
 
   .shad-input {
-    @apply border-none shadow-none p-0 text-[0.875rem] leading-5 outline-none;
+    @apply border-none shadow-none p-0 text-[16px] sm:text-sm leading-5 outline-none;
     caret-color: var(--color-primary);
     transition: all 0.2s ease;
   }
@@ -398,10 +398,18 @@
   }
 
   .shad-alert-dialog {
-    @apply space-y-6 w-full max-w-md rounded-2xl px-6 py-8 shadow-lg border;
+    @apply w-[calc(100vw-2rem)] max-w-md
+    rounded-2xl
+    px-4 sm:px-6
+    py-6 sm:py-8
+    space-y-6
+    shadow-lg border
+    overflow-hidden;
+
     background-color: var(--background);
     color: var(--foreground);
     border-color: var(--border);
+
     animation: fade-in 0.2s ease-out;
     backdrop-filter: blur(8px);
   }
@@ -424,17 +432,25 @@
   }
 
   .shad-otp {
-    @apply flex w-full justify-center gap-2;
+    @apply flex w-full justify-center gap-1 sm:gap-2;
   }
 
   .shad-otp-slot {
-    @apply flex items-center justify-center text-2xl md:text-3xl font-semibold rounded-xl border transition-all;
-    width: 48px;
-    height: 56px;
+    @apply flex items-center justify-center
+    rounded-xl
+    border
+    font-semibold
+    text-lg sm:text-2xl md:text-3xl
+    transition-all
+    shrink;
+
+    width: clamp(40px, 12vw, 48px);
+    height: clamp(48px, 14vw, 56px);
 
     background-color: var(--card);
     color: var(--foreground);
     border: 1.5px solid var(--border);
+
     box-shadow: var(--shadow-elevation);
   }
   
