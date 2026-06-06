@@ -249,6 +249,8 @@ export const deleteUserAccount = async () => {
     );
 
     if (existingUser) {
+      await users.delete(existingUser.accountId);
+
       await databases.deleteDocument(
         appwriteConfig.databaseId,
         appwriteConfig.userTableId,

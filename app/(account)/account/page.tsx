@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { deleteUserAccount, getCurrentUser, signOutUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import {
@@ -116,11 +115,13 @@ const AccountPage = async () => {
                   </AlertDialogCancel>
 
                   <form action={deleteUserAccount}>
-                    <AlertDialogAction
-                      type="submit"
-                      className="delete-account-submit-button"
-                    >
-                      Delete Account
+                    <AlertDialogAction asChild>
+                      <button
+                        type="submit"
+                        className="delete-account-submit-button"
+                      >
+                        Delete Account
+                      </button>
                     </AlertDialogAction>
                   </form>
                 </AlertDialogFooter>
