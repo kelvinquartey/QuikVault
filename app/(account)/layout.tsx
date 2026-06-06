@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
 
+export const dynamic = "force-dynamic";
+
 export default async function AccountLayout({
   children,
 }: {

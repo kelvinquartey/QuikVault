@@ -1,16 +1,19 @@
 import PublicHeader from "@/components/PublicHeader";
-import { getCurrentUser } from "@/lib/actions/user.actions";
+import { cookies } from "next/headers";
 
 export default async function PublicLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const user = await getCurrentUser();
+    const cookieStore = await cookies();
+
+    const isLoggedIn =
+    !!cookieStore.get("appwrite-session");
 
     return (
         <>
-            <PublicHeader isLoggedIn={!!user} />
+            <PublicHeader isLoggedIn={isLoggedIn} />
 
             <main>
                 {children}

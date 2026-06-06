@@ -6,6 +6,8 @@ import { redirect } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner"
 import Footer from '@/components/Footer';
 
+export const dynamic = "force-dynamic";
+
 export default async function Layout({
     children,
 }: {
