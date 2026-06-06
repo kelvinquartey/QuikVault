@@ -2,11 +2,11 @@ import Link from "next/link";
 
 const TermsPage = () => {
   return (
-    <main className="min-h-screen bg-[var(--background)] px-6 py-16 text-[var(--foreground)]">
+    <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-0 sm:px-6 py-0 sm:py-10">
         <div className="mx-auto max-w-4xl">
             <div className="mb-12 text-center">
                 <div className="mb-4 inline-flex items-center rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 px-4 py-2">
-                    <span className="h1 font-medium text-[var(--color-primary)] dark:text-white/90">
+                    <span className="text-2xl sm:text-[2.125rem] sm:leading-[2.625rem] font-medium text-[var(--color-primary)] dark:text-white/90">
                         Terms & Conditions
                     </span>
                 </div>
