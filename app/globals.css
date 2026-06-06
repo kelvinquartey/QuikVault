@@ -683,7 +683,20 @@
   }
 
   .uploader-preview-list {
-    @apply fixed bottom-10 right-10 z-50 flex size-full h-fit max-w-[480px] flex-col gap-3 rounded-[20px] bg-[var(--card)] p-7 border border-black/50 dark:border-white/10 shadow-xl backdrop-blur-md;
+    @apply fixed bottom-4 right-4 z-50
+    flex w-[calc(100vw-2rem)]
+    max-w-[480px]
+    flex-col gap-3
+    rounded-[20px]
+    bg-[var(--card)]
+    p-5
+    border border-black/50
+    dark:border-white/10
+    shadow-xl
+    backdrop-blur-md
+    overflow-y-auto;
+    scrollbar-width: thin;
+    max-height: calc(100vh - 2rem);
   }
 
   .uploader-preview-item {
