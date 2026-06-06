@@ -11,6 +11,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import AccountProfile from "@/components/AccountProfile";
 import { getAvatarUrl } from "@/lib/getAvatar";
 import AccountHeader from "@/components/AccountHeader";
@@ -83,50 +93,57 @@ const AccountPage = async () => {
               This action cannot be undone.
             </p>
 
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
+            <Dialog>
+              <DialogTrigger asChild>
                 <button className="delete-account">
                   Delete Account
                 </button>
-              </AlertDialogTrigger>
+              </DialogTrigger>
 
-              <AlertDialogContent className="shad-dialog">
-                <AlertDialogHeader className="flex flex-col gap-3">
-                  <AlertDialogTitle className="text-center text-2xl">
-                    Delete Account?
-                  </AlertDialogTitle>
+              <DialogContent className="shad-dialog">
+                <form action={deleteUserAccount}>
 
-                  <AlertDialogDescription
-                    className="
-                      text-center
-                      text-[var(--color-light-100)]
-                      dark:text-[var(--color-light-200)]
-                    "
-                  >
-                    Are you sure you want to permanently delete your account?
-                    All uploaded files and account data will be removed permanently.
-                    This action cannot be undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
+                  <DialogHeader className="flex flex-col gap-3">
+                    <DialogTitle className="text-center text-2xl">
+                      Delete Account?
+                    </DialogTitle>
 
-                <AlertDialogFooter className="flex flex-row justify-center gap-3 sm:justify-center">
-                  <AlertDialogCancel className="flex-1 h-11 cursor-pointer text-base hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200">
-                    Cancel
-                  </AlertDialogCancel>
+                    <DialogDescription
+                      className="
+                        text-center
+                        text-[var(--color-light-100)]
+                        dark:text-[var(--color-light-200)]
+                      "
+                    >
+                      Are you sure you want to permanently delete your account?
+                      All uploaded files and account data will be removed permanently.
+                      This action cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
 
-                  <form action={deleteUserAccount}>
-                    <AlertDialogAction asChild>
+                  <DialogFooter className="flex flex-row justify-center gap-3 sm:justify-center">
+
+                    <DialogClose asChild>
                       <button
-                        type="submit"
-                        className="delete-account-submit-button"
+                        type="button"
+                        className="modal-cancel-button"
                       >
-                        Delete Account
+                        Cancel
                       </button>
-                    </AlertDialogAction>
-                  </form>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                    </DialogClose>
+
+                    <button
+                      type="submit"
+                      className="delete-account-submit-button"
+                    >
+                      Delete Account
+                    </button>
+
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
+
           </section>
         </div>
       </div>
