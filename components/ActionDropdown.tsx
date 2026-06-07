@@ -239,7 +239,7 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                 )}
                 </DialogHeader>
                 {["rename", "delete", "share"].includes(value) && (
-                    <DialogFooter className="flex flex-col gap-3 md:flex-row">
+                    <DialogFooter className="flex flex-row justify-center gap-3">
                         <Button onClick={closeAllModals} className="modal-cancel-button">
                             Cancel
                         </Button>
