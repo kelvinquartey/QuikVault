@@ -744,7 +744,7 @@
     @apply flex mt-2 flex-col justify-between sm:flex-row sm:items-center;
   }
   .file-list {
-    @apply grid w-full gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch;
+    @apply grid w-full gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-start;
   }
 
   /* .file-list {
@@ -880,7 +880,7 @@
 
   /* Card */
   .file-card {
-    @apply flex cursor-pointer flex-col gap-4 rounded-[18px] bg-[var(--card)] p-5 shadow-sm transition-all hover:shadow-drop-3 w-full h-full;
+    @apply flex cursor-pointer flex-col gap-4 rounded-[18px] bg-[var(--card)] p-5 shadow-sm transition-all hover:shadow-drop-3 w-full;
   }
   
   .file-card-details {
