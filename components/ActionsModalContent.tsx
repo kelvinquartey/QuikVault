@@ -95,7 +95,7 @@ export const ShareInput = ({
                         className="absolute right-3 top-1/2 -translate-y-1/2 hidden dark:block opacity-70 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
                     >
                         <Image
-                            src="/assets/icons/add-dark.svg"
+                            src="/assets/icons/add.svg"
                             alt="add"
                             width={30}
                             height={30}
