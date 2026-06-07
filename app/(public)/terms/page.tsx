@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const TermsPage = () => {
   return (
-    <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-0 sm:px-6 py-0 sm:py-10">
+    <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)] px-0 sm:px-6 py-0 sm:py-10 mt-2.5">
         <div className="mx-auto max-w-4xl">
             <div className="mb-12 text-center">
                 <div className="mb-4 inline-flex items-center rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 px-4 py-2">
@@ -11,7 +11,7 @@ const TermsPage = () => {
                     </span>
                 </div>
 
-                <p className="mx-auto max-w-2xl text-base text-[var(--color-light-100)] dark:text-[var(--color-light-200)] sm:text-lg">
+                <p className="mx-auto max-w-2xl text-base text-[var(--color-light-100)] dark:text-[var(--color-light-200)] sm:text-lg px-1 sm:px-6">
                     Please read these terms carefully before using this platform.
                 </p>
             </div>
