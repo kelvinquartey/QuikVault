@@ -1,17 +1,6 @@
 import { deleteUserAccount, getCurrentUser, signOutUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
