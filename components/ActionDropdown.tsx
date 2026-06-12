@@ -216,7 +216,7 @@ const ActionDropdown = ({file}: {file:FileDocument}) => {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        
+                        className="text-[16px]"
                     />
                 )}
                 {value === "details" && <FileDetails file={file} />}

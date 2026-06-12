@@ -87,6 +87,14 @@ export const ShareInput = ({
                             alt="add"
                             width={22}
                             height={22}
+                            className="block dark:hidden"
+                        />
+                        <Image
+                            src="/assets/icons/add.svg"
+                            alt="add"
+                            width={22}
+                            height={22}
+                            className="hidden dark:block"
                         />
                     </button>
                     <button
